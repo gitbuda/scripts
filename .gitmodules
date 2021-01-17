@@ -1,0 +1,15 @@
+[submodule "util"]
+	path = util
+	url = git@github.com:gitbuda/workspace-scripts.git
+[submodule "vim"]
+	path = vim
+	url = git@github.com:gitbuda/vim-config.git
+[submodule "dotfiles"]
+	path = dotfiles
+	url = git@github.com:gitbuda/dotfiles.git
+[submodule "git"]
+	path = git
+	url = git@github.com:gitbuda/git-scripts.git
+[submodule "network"]
+	path = network
+	url = https://github.com/gitbuda/network-scripts
