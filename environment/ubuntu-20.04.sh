@@ -1,4 +1,20 @@
-#!/bin/bash
+#!/bin/bash -e
 
-echo "TODO(gitbuda): Add the whole Ubuntu 20.04 setup."
-exit 1
+script_dir="$( cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck disable=SC1090
+source "$script_dir/../util/os_util"
+
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root."
+fi
+
+DEPS=(
+    htop tmux vim tree
+)
+
+for pkg in "${DEPS[@]}"; do
+    if ! deb_installed "$pkg"; then
+        apt install -y "$pkg"
+    fi
+    echo "$pkg is installed." && continue
+done

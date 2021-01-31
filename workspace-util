@@ -1,0 +1,40 @@
+#!/bin/bash -e
+
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck disable=SC2034
+root_workspace_dir="/home/$USER/Workspace"
+
+#shellcheck disable=SC1090
+source "${script_dir}/util/tmux_util"
+#shellcheck disable=SC1090
+source "${script_dir}/git/git-cleanup"
+set +e
+
+workspace_action() {
+    action="$1"
+    session_name="$2"
+    workspace_script_directory="$3"
+    workspace_script="${workspace_script_directory}/${session_name}"
+    workspace_data_directory="$4"
+    repo_url="$5"
+    case ${action} in
+        --kill)
+        kill_session "${session_name}"
+        ;;
+        --cleanup-list)
+        cleanup_list_git "${workspace_data_directory}"
+        ;;
+        --cleanup)
+        cleanup_git "${workspace_data_directory}"
+        ;;
+        --script)
+        echo "${workspace_script}"
+        ;;
+        --workspace-dir)
+        echo "${workspace_data_directory}"
+        ;;
+        --git-clone)
+        git clone "$repo_url" "$workspace_data_directory"
+        ;;
+    esac
+}
