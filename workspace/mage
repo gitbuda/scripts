@@ -16,7 +16,7 @@ if [[ $# -eq 0 ]]; then
         "debug" "" \
         "test" "" \
         "run" "" \
-        "client" "" \
+        "console" "" \
         "release" "" \
         "search" "" \
         "vcs" ""
