@@ -1,15 +1,20 @@
 [submodule "util"]
 	path = util
 	url = git@github.com:gitbuda/workspace-scripts.git
+	update = merge
 [submodule "vim"]
 	path = vim
 	url = git@github.com:gitbuda/vim-config.git
+	update = merge
 [submodule "dotfiles"]
 	path = dotfiles
 	url = git@github.com:gitbuda/dotfiles.git
+	update = merge
 [submodule "git"]
 	path = git
 	url = git@github.com:gitbuda/git-scripts.git
+	update = merge
 [submodule "network"]
 	path = network
 	url = https://github.com/gitbuda/network-scripts
+	update = merge
