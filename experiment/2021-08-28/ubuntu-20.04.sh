@@ -16,9 +16,10 @@ DEPS=(
     google-chrome-stable
     custom-fonts
     # Install neovim from source because v0.5+ is required.
-    ninja-build gettext libtool libtool-bin autoconf automake cmake g++ clang pkg-config unzip curl
+    ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl
     # Terminal Profile Setup: FiraMono Medium Regular 11, Tango, Show scrollbar OFF.
     custom-neovim custom-nvchad
+    clang clang-format
     custom-rust
     custom-nvm
     custom-docker
