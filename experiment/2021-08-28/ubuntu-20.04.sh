@@ -1,5 +1,23 @@
 #!/bin/bash -e
 
+DEPS=(
+    htop tmux vim tree curl git libssl-dev
+    google-chrome-stable
+    custom-fonts
+    # Install neovim from source because v0.5+ is required.
+    ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl
+    dconf-cli uuid-runtime
+    # Install One Dark with https://github.com/Mayccoll/Gogh
+    # Terminal Profile Setup: FiraMono Medium Regular 11, One Dark Theme, Show scrollbar OFF.
+    # Put #ABB2BF as a Default Text Color
+    custom-neovim custom-nvchad
+    clang clang-format
+    ripgrep
+    custom-rust
+    custom-nvm
+    custom-docker
+)
+
 script_dir="$( cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # shellcheck disable=SC1090
 source "$script_dir/../../util/os_util"
@@ -10,20 +28,6 @@ fi
 if [ "$SUDO_USER" == "" ]; then
     echo "Please run as sudo."
 fi
-
-DEPS=(
-    htop tmux vim tree curl git libssl-dev
-    google-chrome-stable
-    custom-fonts
-    # Install neovim from source because v0.5+ is required.
-    ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl
-    # Terminal Profile Setup: FiraMono Medium Regular 11, Tango, Show scrollbar OFF.
-    custom-neovim custom-nvchad
-    clang clang-format
-    custom-rust
-    custom-nvm
-    custom-docker
-)
 
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
@@ -57,7 +61,7 @@ for pkg in "${DEPS[@]}"; do
 
     if [ "$pkg" == custom-nvchad ]; then
         if [ ! -d /home/$SUDO_USER/.config/nvim ]; then
-            git clone https://github.com/NvChad/NvChad /home/$SUDO_USER/.config/nvim
+            GIT_SSH_COMMAND="ssh -i /home/$SUDO_USER/.ssh/github" git clone git@github.com:gitbuda/NvChad.git /home/$SUDO_USER/.config/nvim
             chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/nvim
         fi
         echo "$pkg is installed." && continue
