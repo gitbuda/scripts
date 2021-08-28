@@ -2,11 +2,11 @@
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-dotfiles=""
+dotfiles="bashrc"
 
 for f in ${dotfiles}; do
     rm -rf "$HOME/.$f"
-    ln -s "${script_dir}/dotfiles/$f" "$HOME/.$f"
+    ln -s "${script_dir}/$f" "$HOME/.$f"
 done
 
 ## Dependencies setup.

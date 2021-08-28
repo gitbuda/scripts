@@ -12,13 +12,21 @@ if [ "$SUDO_USER" == "" ]; then
 fi
 
 DEPS=(
-    htop tmux vim tree curl
-    neovim git
+    htop tmux vim tree curl git
     google-chrome-stable
+    custom-fonts
+    # Install neovim from source because v0.5+ is required.
+    ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl
+    # Terminal Profile Setup: FiraMono Medium Regular 11, Tango, Show scrollbar OFF.
+    custom-neovim custom-nvchad
     custom-rust
+    custom-nvm
 )
 
 for pkg in "${DEPS[@]}"; do
+    # if [ "$pkg" ==  ]; then
+    # fi
+
     if [ "$pkg" == google-chrome-stable ]; then
         if ! deb_installed "$pkg"; then
             wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
@@ -28,12 +36,49 @@ for pkg in "${DEPS[@]}"; do
         fi
 	echo "$pkg is installed." && continue
     fi
+
     if [ "$pkg" == custom-rust ]; then
         if ! bin_installed "/home/$SUDO_USER/.cargo/bin/rustup"; then
             sudo -H -u "$SUDO_USER" bash -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
         fi
         echo "$pkg is installed." && continue
     fi
+
+    if [ "$pkg" == custom-neovim ]; then
+	if ! bin_installed "$script_dir/neovim/build/bin/nvim"; then
+            cd "$script_dir"
+            git clone https://github.com/neovim/neovim
+            cd neovim && make -j4 && make install
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-nvchad ]; then
+        if [ ! -d /home/$SUDO_USER/.config/nvim ]; then
+            git clone https://github.com/NvChad/NvChad /home/$SUDO_USER/.config/nvim
+            chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/nvim
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-fonts ]; then
+        cd "$script_dir"
+        # Use fc-list to see the list of all installed fonts.
+        if [ ! -f FiraMono.zip ]; then
+            wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraMono.zip -O FiraMono.zip
+            unzip FiraMono.zip -d /home/$SUDO_USER/.fonts
+            fc-cache -fv
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-nvm ]; then
+        if [ ! -d /home/$SUDO_USER/.nvm ]; then
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
     if ! deb_installed "$pkg"; then
         apt install -y "$pkg"
     fi
