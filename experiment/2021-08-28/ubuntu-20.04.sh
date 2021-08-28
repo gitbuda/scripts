@@ -12,15 +12,16 @@ if [ "$SUDO_USER" == "" ]; then
 fi
 
 DEPS=(
-    htop tmux vim tree curl git
+    htop tmux vim tree curl git libssl-dev
     google-chrome-stable
     custom-fonts
     # Install neovim from source because v0.5+ is required.
-    ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl
+    ninja-build gettext libtool libtool-bin autoconf automake cmake g++ clang pkg-config unzip curl
     # Terminal Profile Setup: FiraMono Medium Regular 11, Tango, Show scrollbar OFF.
     custom-neovim custom-nvchad
     custom-rust
     custom-nvm
+    custom-docker
 )
 
 for pkg in "${DEPS[@]}"; do
@@ -75,6 +76,22 @@ for pkg in "${DEPS[@]}"; do
     if [ "$pkg" == custom-nvm ]; then
         if [ ! -d /home/$SUDO_USER/.nvm ]; then
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-docker ]; then
+        if ! deb_installed "docker-ce"; then
+            apt update
+            apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+            echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+            apt update
+            apt install -y docker-ce docker-ce-cli containerd.io
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
+            usermod -aG docker $SUDO_USER
+            newgrp docker
         fi
         echo "$pkg is installed." && continue
     fi

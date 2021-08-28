@@ -2,7 +2,7 @@
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-dotfiles="bashrc"
+dotfiles="bashrc tmux.conf"
 
 for f in ${dotfiles}; do
     rm -rf "$HOME/.$f"
