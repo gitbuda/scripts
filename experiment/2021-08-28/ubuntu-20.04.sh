@@ -13,6 +13,7 @@ DEPS=(
     custom-neovim custom-nvchad
     clang clang-format
     ripgrep
+    shellcheck
     custom-rust
     custom-nvm
     custom-docker
