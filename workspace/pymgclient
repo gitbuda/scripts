@@ -11,7 +11,7 @@ repo_url="git@github.com:memgraph/pymgclient.git"
 
 if [[ $# -eq 0 ]]; then
     start_session "${session_name}" "${root_directory}" \
-        "code" "vim" \
+        "code" "nvim README.md" \
         "run" "" \
         "todo" "" \
         "todo" "" \
