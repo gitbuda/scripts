@@ -11,7 +11,7 @@ repo_url="git@github.com:memgraph/mage.git"
 
 if [[ $# -eq 0 ]]; then
     start_session "${session_name}" "${root_directory}" \
-        "code" "vim" \
+        "code" "nvim README.md" \
         "root" "" \
         "lang_cpp" "" \
         "lang_py" "" \
