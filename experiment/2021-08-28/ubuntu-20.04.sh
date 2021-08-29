@@ -73,6 +73,7 @@ for pkg in "${DEPS[@]}"; do
         # Use fc-list to see the list of all installed fonts.
         if [ ! -f FiraMono.zip ]; then
             wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraMono.zip -O FiraMono.zip
+            mkdir -p /home/$SUDO_USER/.fonts
             unzip FiraMono.zip -d /home/$SUDO_USER/.fonts
             fc-cache -fv
         fi
