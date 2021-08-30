@@ -17,9 +17,12 @@ DEPS=(
     custom-rust
     custom-nvm
     custom-docker
+    custom-tpm
 )
 
-script_dir="$( cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DOTFILES="bashrc tmux.conf"
+
+script_dir="$( cd "$(dirname "$([ -L "$0" ] && readlink -f "$0" || echo "$0")")" && pwd)"
 # shellcheck disable=SC1090
 source "$script_dir/../../util/os_util"
 
@@ -29,6 +32,11 @@ fi
 if [ "$SUDO_USER" == "" ]; then
     echo "Please run as sudo."
 fi
+
+for f in ${DOTFILES}; do
+    rm -rf "/home/$SUDO_USER/.$f"
+    sudo -H -u "$SUDO_USER" bash -c "ln -s ${script_dir}/$f /home/$SUDO_USER/.$f"
+done
 
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
@@ -61,9 +69,9 @@ for pkg in "${DEPS[@]}"; do
     fi
 
     if [ "$pkg" == custom-nvchad ]; then
-        if [ ! -d /home/$SUDO_USER/.config/nvim ]; then
-            GIT_SSH_COMMAND="ssh -i /home/$SUDO_USER/.ssh/github" git clone git@github.com:gitbuda/NvChad.git /home/$SUDO_USER/.config/nvim
-            chown -R $SUDO_USER:$SUDO_USER /home/$SUDO_USER/.config/nvim
+        if [ ! -d "/home/$SUDO_USER/.config/nvim" ]; then
+            GIT_SSH_COMMAND="ssh -i /home/$SUDO_USER/.ssh/github" git clone git@github.com:gitbuda/NvChad.git "/home/$SUDO_USER/.config/nvim"
+            chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config/nvim"
         fi
         echo "$pkg is installed." && continue
     fi
@@ -73,15 +81,15 @@ for pkg in "${DEPS[@]}"; do
         # Use fc-list to see the list of all installed fonts.
         if [ ! -f FiraMono.zip ]; then
             wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraMono.zip -O FiraMono.zip
-            mkdir -p /home/$SUDO_USER/.fonts
-            unzip FiraMono.zip -d /home/$SUDO_USER/.fonts
+            mkdir -p "/home/$SUDO_USER/.fonts"
+            unzip FiraMono.zip -d "/home/$SUDO_USER/.fonts"
             fc-cache -fv
         fi
         echo "$pkg is installed." && continue
     fi
 
     if [ "$pkg" == custom-nvm ]; then
-        if [ ! -d /home/$SUDO_USER/.nvm ]; then
+        if [ ! -d "/home/$SUDO_USER/.nvm" ]; then
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
         fi
         echo "$pkg is installed." && continue
@@ -97,8 +105,17 @@ for pkg in "${DEPS[@]}"; do
             apt install -y docker-ce docker-ce-cli containerd.io
             curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
             chmod +x /usr/local/bin/docker-compose
-            usermod -aG docker $SUDO_USER
+            usermod -aG docker "$SUDO_USER"
             newgrp docker
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-tpm ]; then
+        tpm_repo="https://github.com/tmux-plugins/tpm"
+        tpm_dir="/home/$SUDO_USER/.tmux/plugins/tpm"
+        if [[ ! -d "${tpm_dir}" ]]; then
+            git clone "${tpm_repo}" "${tpm_dir}"
         fi
         echo "$pkg is installed." && continue
     fi
