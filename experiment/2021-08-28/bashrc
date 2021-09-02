@@ -121,6 +121,8 @@ fi
 export PATH="$PATH:/home/$USER/scripts"
 export PATH="$PATH:/home/$USER/scripts/workspace"
 
+/home/$USER/scripts/util/setstuff caps
+
 # Rust
 . "$HOME/.cargo/env"
 
