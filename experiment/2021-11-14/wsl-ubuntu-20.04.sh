@@ -1,9 +1,14 @@
 #!/bin/bash -e
 
+# NOTE: Terminal colors and fonts have to be configured on the Windows side.
+#       https://www.tenforums.com/tutorials/179097-how-change-font-size-windows-terminal-profile-windows-10-a.html
+
 DEPS=(
     htop tmux vim tree curl git libssl-dev unzip fontconfig
-    custom-fonts
+    python3-virtualenv python3-dev
     custom-rust
+    custom-nvim
+    custom-nvchad
     custom-nvm
 )
 
@@ -36,14 +41,20 @@ for pkg in "${DEPS[@]}"; do
         echo "$pkg is installed." && continue
     fi
 
-    if [ "$pkg" == custom-fonts ]; then
-        cd "$script_dir"
-        # Use fc-list to see the list of all installed fonts.
-        if [ ! -f FiraMono.zip ]; then
-            wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraMono.zip -O FiraMono.zip
-            mkdir -p "/home/$SUDO_USER/.fonts"
-            unzip FiraMono.zip -d "/home/$SUDO_USER/.fonts"
-            fc-cache -fv
+    if [ "$pkg" == custom-nvim ]; then
+        echo "custom neovim"
+        if ! deb_installed "neovim"; then
+            add-apt-repository -y ppa:neovim-ppa/stable
+            apt update -y
+            apt install -y neovim
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-nvchad ]; then
+        if [ ! -d "/home/$SUDO_USER/.config/nvim" ]; then
+            GIT_SSH_COMMAND="ssh -i /home/$SUDO_USER/.ssh/github" git clone git@github.com:gitbuda/NvChad.git "/home/$SUDO_USER/.config/nvim"
+            chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config/nvim"
         fi
         echo "$pkg is installed." && continue
     fi
