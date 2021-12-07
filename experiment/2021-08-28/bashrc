@@ -121,6 +121,7 @@ fi
 export PATH="$PATH:/home/$USER/scripts"
 export PATH="$PATH:/home/$USER/scripts/workspace"
 
+# TODO(gitbuda): Avoid this call on server environments.
 /home/$USER/scripts/util/setstuff caps
 
 # Rust
