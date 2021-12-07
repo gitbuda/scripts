@@ -2,6 +2,7 @@
 
 DEPS=(
     htop tmux vim tree curl git libssl-dev
+    openssh-server
     google-chrome-stable
     custom-fonts
     # Install neovim from source because v0.5+ is required.
@@ -15,7 +16,9 @@ DEPS=(
     ripgrep
     shellcheck
     gpick gimp inkscape
-    powerstat powertop
+    powerstat powertop lm-sensors
+    dos2unix
+    # TODO: custom-miniconda
     custom-rust
     custom-nvm
     custom-docker
