@@ -6,6 +6,7 @@
 DEPS=(
     htop tmux vim tree curl git libssl-dev unzip fontconfig
     python3-virtualenv python3-dev
+    calibre
     custom-rust
     custom-nvim
     custom-nvchad
@@ -29,6 +30,8 @@ for f in ${DOTFILES}; do
     rm -rf "/home/$SUDO_USER/.$f"
     sudo -H -u "$SUDO_USER" bash -c "ln -s ${script_dir}/$f /home/$SUDO_USER/.$f"
 done
+
+sudo apt update -y
 
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
