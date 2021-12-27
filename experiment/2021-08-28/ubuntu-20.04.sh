@@ -3,6 +3,7 @@
 DEPS=(
     htop tmux vim tree curl git libssl-dev
     openssh-server
+    ansible
     google-chrome-stable
     custom-fonts
     # Install neovim from source because v0.5+ is required.
