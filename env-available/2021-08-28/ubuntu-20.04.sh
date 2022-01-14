@@ -6,7 +6,7 @@ DEPS=(
     ansible
     google-chrome-stable
     custom-fonts
-    # Install neovim from source because v0.5+ is required.
+    # Install neovim from source because latest is required.
     ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl
     dconf-cli uuid-runtime
     # Install One Dark with https://github.com/Mayccoll/Gogh
@@ -19,7 +19,7 @@ DEPS=(
     gpick gimp inkscape
     powerstat powertop lm-sensors
     dos2unix
-    # TODO: custom-miniconda
+    # TODO: custom-miniconda FROM https://varhowto.com/install-miniconda-ubuntu-20-04/
     # TODO: custom-cuda FROM https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04
     custom-rust
     custom-nvm
