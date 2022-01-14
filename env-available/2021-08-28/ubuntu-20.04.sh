@@ -20,6 +20,7 @@ DEPS=(
     powerstat powertop lm-sensors
     dos2unix
     # TODO: custom-miniconda
+    # TODO: custom-cuda FROM https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04
     custom-rust
     custom-nvm
     custom-docker
