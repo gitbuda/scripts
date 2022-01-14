@@ -11,6 +11,7 @@ DEPS=(
     custom-nvim
     custom-nvchad
     custom-nvm
+    custom-fzf
 )
 
 DOTFILES="bashrc"
@@ -25,6 +26,7 @@ fi
 if [ "$SUDO_USER" == "" ]; then
     echo "Please run as sudo."
 fi
+HOME=/home/$SUDO_USER
 
 for f in ${DOTFILES}; do
     rm -rf "/home/$SUDO_USER/.$f"
@@ -65,6 +67,15 @@ for pkg in "${DEPS[@]}"; do
     if [ "$pkg" == custom-nvm ]; then
         if [ ! -d "/home/$SUDO_USER/.nvm" ]; then
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-fzf ]; then
+        if [ ! -d "/home/$SUDO_USER/.fzf" ]; then
+            git clone --depth 1 https://github.com/junegunn/fzf.git /home/$SUDO_USER/.fzf
+            /home/$SUDO_USER/.fzf/install
+            chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.fzf"
         fi
         echo "$pkg is installed." && continue
     fi
