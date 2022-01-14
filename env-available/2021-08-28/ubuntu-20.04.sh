@@ -104,7 +104,7 @@ for pkg in "${DEPS[@]}"; do
 
     if [ "$pkg" == custom-nvm ]; then
         if [ ! -d "/home/$SUDO_USER/.nvm" ]; then
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | sudo -H -u "$SUDO_USER" bash
         fi
         echo "$pkg is installed." && continue
     fi

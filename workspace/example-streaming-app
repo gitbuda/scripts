@@ -4,15 +4,15 @@
 source "workspace-util"
 
 script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-session_name="pymgclient"
+session_name="example-streaming-app"
 # shellcheck disable=SC2154
-root_directory="${root_workspace_dir}/code/memgraph/pymgclient"
-repo_url="git@github.com:memgraph/pymgclient.git"
+root_directory="${root_workspace_dir}/code/memgraph/example-streaming-app"
+repo_url="git@github.com:memgraph/example-streaming-app.git"
 
 if [[ $# -eq 0 ]]; then
     start_session "${session_name}" "${root_directory}" \
-        "code" "nvim README.md" \
-        "run" "" \
+        "code" "" \
+        "build" "" \
         "todo" "" \
         "todo" "" \
         "todo" "" \
