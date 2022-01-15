@@ -23,6 +23,7 @@ DEPS=(
     # TODO: custom-miniconda FROM https://varhowto.com/install-miniconda-ubuntu-20-04/
     # TODO: custom-cuda FROM https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04
     # TODO: Setup something similar to https://github.com/solarkennedy/instant-py-bt
+    # TODO: For toolchain to work set https://sourceware.org/gdb/onlinedocs/gdb/Auto_002dloading-safe-path.html
     custom-rust
     custom-nvm
     custom-docker
