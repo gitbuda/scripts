@@ -24,10 +24,12 @@ DEPS=(
     # TODO: custom-cuda FROM https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04
     # TODO: Setup something similar to https://github.com/solarkennedy/instant-py-bt
     # TODO: For toolchain to work set https://sourceware.org/gdb/onlinedocs/gdb/Auto_002dloading-safe-path.html
+    # TODO: Add `set confirm off` to the gdbinit
     custom-rust
     custom-nvm
     custom-docker
     custom-tpm
+    custom-fzf
 )
 
 DOTFILES="bashrc tmux.conf"
@@ -42,6 +44,7 @@ fi
 if [ "$SUDO_USER" == "" ]; then
     echo "Please run as sudo."
 fi
+HOME=/home/$SUDO_USER
 
 for f in ${DOTFILES}; do
     rm -rf "/home/$SUDO_USER/.$f"
@@ -134,6 +137,15 @@ for pkg in "${DEPS[@]}"; do
         tpm_dir="/home/$SUDO_USER/.tmux/plugins/tpm"
         if [[ ! -d "${tpm_dir}" ]]; then
             git clone "${tpm_repo}" "${tpm_dir}"
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-fzf ]; then
+        if [ ! -d "/home/$SUDO_USER/.fzf" ]; then
+            git clone --depth 1 https://github.com/junegunn/fzf.git /home/$SUDO_USER/.fzf
+            /home/$SUDO_USER/.fzf/install
+            chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.fzf"
         fi
         echo "$pkg is installed." && continue
     fi

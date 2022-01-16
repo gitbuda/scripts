@@ -165,3 +165,5 @@ unset __conda_setup
 # <<< conda initialize <<<
 }
 export -f miniconda_activate
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
