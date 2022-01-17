@@ -2,7 +2,11 @@
 
 DEPS=(
     htop tmux vim tree curl git libssl-dev
-    openssh-server
+    # https://wiki.archlinux.org/title/SSH_keys -> a very nice read about SSH keys.
+    # https://unix.stackexchange.com/questions/90853/how-can-i-run-ssh-add-automatically-without-a-password-prompt
+    # ssh-ident seems very interesting for the server side use-case.
+    openssh-server keychain gnupg-agent custom-ssh-ident
+    python-is-python3 # REQUIRED_BY: ssh-ident
     ansible
     google-chrome-stable
     custom-fonts
@@ -20,8 +24,10 @@ DEPS=(
     powerstat powertop lm-sensors
     dos2unix
     mlocate
+    # CONDA
     # TODO: custom-miniconda FROM https://varhowto.com/install-miniconda-ubuntu-20-04/
     # TODO: custom-cuda FROM https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04
+    # GDB
     # TODO: Setup something similar to https://github.com/solarkennedy/instant-py-bt
     # TODO: For toolchain to work set https://sourceware.org/gdb/onlinedocs/gdb/Auto_002dloading-safe-path.html
     # TODO: Add `set confirm off` to the gdbinit
@@ -96,6 +102,17 @@ for pkg in "${DEPS[@]}"; do
         if [ ! -d "/home/$SUDO_USER/.config/nvim" ]; then
             GIT_SSH_COMMAND="ssh -i /home/$SUDO_USER/.ssh/github" git clone git@github.com:gitbuda/NvChad.git "/home/$SUDO_USER/.config/nvim"
             chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config/nvim"
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-ssh-ident ]; then
+        ssh_ident_folder="/home/$SUDO_USER/.local/ssh-ident"
+        if [ ! -d "$ssh_ident_folder" ]; then
+            GIT_SSH_COMMAND="ssh -i /home/$SUDO_USER/.ssh/github" git clone git@github.com:ccontavalli/ssh-ident.git "$ssh_ident_folder"
+            chown -R "$SUDO_USER:$SUDO_USER" "$ssh_ident_folder"
+            cd "$ssh_ident_folder"
+            ln -s ssh-ident ssh
         fi
         echo "$pkg is installed." && continue
     fi
