@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+# TODO: Add the ability to specify which DEPS to completly reinstall.
+
 DEPS=(
     htop tmux vim tree curl git libssl-dev
     # https://wiki.archlinux.org/title/SSH_keys -> a very nice read about SSH keys.
