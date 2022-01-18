@@ -122,8 +122,10 @@ fi
 export PATH="$PATH:/home/$USER/scripts"
 export PATH="$PATH:/home/$USER/scripts/workspace"
 
-# TODO(gitbuda): Avoid this call on server environments.
-/home/$USER/scripts/util/setstuff caps
+# Avoid caps call over SSH connection because the mapping is already done on the host.
+if [[ "$SSH_CONNECTION" == "" ]]; then
+  /home/$USER/scripts/util/setstuff caps
+fi
 
 # Rust
 . "$HOME/.cargo/env"
