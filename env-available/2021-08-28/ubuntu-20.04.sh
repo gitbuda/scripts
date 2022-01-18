@@ -27,8 +27,8 @@ DEPS=(
     dos2unix
     mlocate
     # CONDA
-    # TODO: custom-miniconda FROM https://varhowto.com/install-miniconda-ubuntu-20-04/
-    # TODO: custom-cuda FROM https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04
+    custom-conda
+    custom-cuda
     # GDB
     # TODO: Setup something similar to https://github.com/solarkennedy/instant-py-bt
     # TODO: For toolchain to work set https://sourceware.org/gdb/onlinedocs/gdb/Auto_002dloading-safe-path.html
@@ -165,6 +165,25 @@ for pkg in "${DEPS[@]}"; do
             git clone --depth 1 https://github.com/junegunn/fzf.git /home/$SUDO_USER/.fzf
             /home/$SUDO_USER/.fzf/install
             chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.fzf"
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-conda ]; then
+        if [ ! -d "/home/$SUDO_USER/.fzf" ]; then
+            cd "$script_dir"
+            wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.out
+            chmod +x miniconda.out
+            ./miniconda.out
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-cuda ]; then
+        if [ ! -d "/usr/local/cuda" ]; then
+            cd "$script_dir"
+            wget https://developer.download.nvidia.com/compute/cuda/11.6.0/local_installers/cuda_11.6.0_510.39.01_linux.run -O cuda.out
+            sh cuda.out
         fi
         echo "$pkg is installed." && continue
     fi
