@@ -1,0 +1,9 @@
+set confirm off
+
+add-auto-load-safe-path .
+add-auto-load-safe-path /usr/share/gdb/auto-load/usr/bin
+
+# REFERENCES
+# https://github.com/solarkennedy/instant-py-bt
+# https://geronimo-bergk.medium.com/use-gdb-to-debug-running-python-processes-a961dc74ae36
+# https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb

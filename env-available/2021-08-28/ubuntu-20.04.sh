@@ -9,6 +9,7 @@ DEPS=(
     # ssh-ident seems very interesting for the server side use-case.
     openssh-server keychain gnupg-agent custom-ssh-ident
     python-is-python3 # REQUIRED_BY: ssh-ident
+    python3-dbg
     ansible
     google-chrome-stable
     custom-fonts
@@ -29,10 +30,6 @@ DEPS=(
     # CONDA
     custom-conda
     custom-cuda
-    # GDB
-    # TODO: Setup something similar to https://github.com/solarkennedy/instant-py-bt
-    # TODO: For toolchain to work set https://sourceware.org/gdb/onlinedocs/gdb/Auto_002dloading-safe-path.html
-    # TODO: Add `set confirm off` to the gdbinit
     custom-rust
     custom-nvm
     custom-docker
@@ -40,7 +37,7 @@ DEPS=(
     custom-fzf
 )
 
-DOTFILES="bashrc tmux.conf"
+DOTFILES="bashrc tmux.conf gdbinit"
 
 script_dir="$( cd "$(dirname "$([ -L "$0" ] && readlink -f "$0" || echo "$0")")" && pwd)"
 # shellcheck disable=SC1090
