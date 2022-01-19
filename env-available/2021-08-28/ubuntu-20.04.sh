@@ -2,10 +2,17 @@
 
 DEPS=(
     htop tmux vim tree curl git libssl-dev
+    # https://wiki.archlinux.org/title/SSH_keys -> a very nice read about SSH keys.
+    # https://unix.stackexchange.com/questions/90853/how-can-i-run-ssh-add-automatically-without-a-password-prompt
+    # ssh-ident seems very interesting for the server side use-case.
+    openssh-server keychain gnupg-agent custom-ssh-ident
+    python-is-python3 # REQUIRED_BY: ssh-ident
+    python3-dbg
+    ansible
     google-chrome-stable
     custom-fonts
-    # Install neovim from source because v0.5+ is required.
-    ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl
+    # Install neovim from source because latest is required.
+    ninja-build gettext libtool libtool-bin autoconf automake cmake cmake-curses-gui g++ pkg-config unzip curl
     dconf-cli uuid-runtime
     # Install One Dark with https://github.com/Mayccoll/Gogh
     # Terminal Profile Setup: FiraMono Medium Regular 11, One Dark Theme, Show scrollbar OFF.
@@ -15,14 +22,19 @@ DEPS=(
     ripgrep
     shellcheck
     gpick gimp inkscape
-    powerstat powertop
+    powerstat powertop lm-sensors
+    dos2unix
+    mlocate
+    custom-conda
+    custom-cuda
     custom-rust
     custom-nvm
     custom-docker
     custom-tpm
+    custom-fzf
 )
 
-DOTFILES="bashrc tmux.conf"
+DOTFILES="bashrc tmux.conf gdbinit"
 
 script_dir="$( cd "$(dirname "$([ -L "$0" ] && readlink -f "$0" || echo "$0")")" && pwd)"
 # shellcheck disable=SC1090
@@ -34,6 +46,7 @@ fi
 if [ "$SUDO_USER" == "" ]; then
     echo "Please run as sudo."
 fi
+HOME=/home/$SUDO_USER
 
 for f in ${DOTFILES}; do
     rm -rf "/home/$SUDO_USER/.$f"
@@ -89,6 +102,17 @@ for pkg in "${DEPS[@]}"; do
         echo "$pkg is installed." && continue
     fi
 
+    if [ "$pkg" == custom-ssh-ident ]; then
+        ssh_ident_folder="/home/$SUDO_USER/.local/ssh-ident"
+        if [ ! -d "$ssh_ident_folder" ]; then
+            GIT_SSH_COMMAND="ssh -i /home/$SUDO_USER/.ssh/github" git clone git@github.com:ccontavalli/ssh-ident.git "$ssh_ident_folder"
+            chown -R "$SUDO_USER:$SUDO_USER" "$ssh_ident_folder"
+            cd "$ssh_ident_folder"
+            ln -s ssh-ident ssh
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
     if [ "$pkg" == custom-fonts ]; then
         cd "$script_dir"
         # Use fc-list to see the list of all installed fonts.
@@ -126,6 +150,34 @@ for pkg in "${DEPS[@]}"; do
         tpm_dir="/home/$SUDO_USER/.tmux/plugins/tpm"
         if [[ ! -d "${tpm_dir}" ]]; then
             git clone "${tpm_repo}" "${tpm_dir}"
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-fzf ]; then
+        if [ ! -d "/home/$SUDO_USER/.fzf" ]; then
+            git clone --depth 1 https://github.com/junegunn/fzf.git /home/$SUDO_USER/.fzf
+            /home/$SUDO_USER/.fzf/install
+            chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.fzf"
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-conda ]; then
+        if [ ! -d "/home/$SUDO_USER/.fzf" ]; then
+            cd "$script_dir"
+            wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.out
+            chmod +x miniconda.out
+            ./miniconda.out
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-cuda ]; then
+        if [ ! -d "/usr/local/cuda" ]; then
+            cd "$script_dir"
+            wget https://developer.download.nvidia.com/compute/cuda/11.6.0/local_installers/cuda_11.6.0_510.39.01_linux.run -O cuda.out
+            sh cuda.out
         fi
         echo "$pkg is installed." && continue
     fi

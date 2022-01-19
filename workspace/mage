@@ -6,7 +6,7 @@ source "workspace-util"
 script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 session_name="mage"
 # shellcheck disable=SC2154
-root_directory="${root_workspace_dir}/code/mage"
+root_directory="${root_workspace_dir}/code/memgraph/mage"
 repo_url="git@github.com:memgraph/mage.git"
 
 if [[ $# -eq 0 ]]; then
