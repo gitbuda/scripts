@@ -1,9 +1,19 @@
-set confirm off
+# Tricky to have it always on:
+#   OK : Reload is called frequently.
+#   BAD: Impossible to put break on undefined symbol.
+# set confirm off
+
+define hook-next
+  refresh
+end
+
+set substitute-path /home/mg/memgraph/environment/toolchain/build/gcc-11.2.0/build/x86_64-linux-gnu/libstdc++-v3/include /opt/toolchain-v4/include/c++/11.2.0
 
 add-auto-load-safe-path .
 add-auto-load-safe-path /usr/share/gdb/auto-load/usr/bin
 
 # REFERENCES
+# https://scylla.docs.scylladb.com/master/guides/debugging.html
 # https://github.com/solarkennedy/instant-py-bt
 # https://geronimo-bergk.medium.com/use-gdb-to-debug-running-python-processes-a961dc74ae36
 # https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb
