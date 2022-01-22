@@ -10,6 +10,7 @@ DEPS=(
     custom-ssh-ident
     python-is-python3 # REQUIRED_BY: ssh-ident
     calibre
+    clang clang-format gdb
     custom-rust
     custom-nvim
     custom-nvchad
