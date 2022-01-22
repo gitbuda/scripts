@@ -6,6 +6,7 @@
 DEPS=(
     htop tmux vim tree curl git libssl-dev unzip fontconfig
     python3-virtualenv python3-dev
+    keychain
     custom-ssh-ident
     python-is-python3 # REQUIRED_BY: ssh-ident
     calibre
