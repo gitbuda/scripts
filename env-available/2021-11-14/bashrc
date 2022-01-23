@@ -146,3 +146,20 @@ source "$HOME/.cargo/env"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Custom terminal setup
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+return_emoji() {
+  # Don't pollute the return value in case we use it for something else
+  local _return_value="$?"
+  if ((_return_value == 0)); then
+    echo -n $'\U1F680' # 🚀
+  else
+    echo -n $'\U1F4A5' # 💥
+  fi
+  return "$_return_value"
+}
+# For some reason return emoji only works if it's at the beginning of PS1
+export PS1=' $(return_emoji) '"\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
