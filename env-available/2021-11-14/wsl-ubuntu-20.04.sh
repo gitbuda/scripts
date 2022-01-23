@@ -6,7 +6,10 @@
 DEPS=(
     htop tmux vim tree curl git libssl-dev unzip fontconfig
     python3-virtualenv python3-dev
+    custom-ssh-ident
+    python-is-python3 # REQUIRED_BY: ssh-ident
     calibre
+    clang clang-format gdb
     custom-rust
     custom-nvim
     custom-nvchad
@@ -76,6 +79,17 @@ for pkg in "${DEPS[@]}"; do
             git clone --depth 1 https://github.com/junegunn/fzf.git /home/$SUDO_USER/.fzf
             /home/$SUDO_USER/.fzf/install
             chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.fzf"
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-ssh-ident ]; then
+        ssh_ident_folder="/home/$SUDO_USER/.local/ssh-ident"
+        if [ ! -d "$ssh_ident_folder" ]; then
+            GIT_SSH_COMMAND="ssh -i /home/$SUDO_USER/.ssh/github" git clone git@github.com:ccontavalli/ssh-ident.git "$ssh_ident_folder"
+            chown -R "$SUDO_USER:$SUDO_USER" "$ssh_ident_folder"
+            cd "$ssh_ident_folder"
+            ln -s ssh-ident ssh
         fi
         echo "$pkg is installed." && continue
     fi
