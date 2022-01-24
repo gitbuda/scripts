@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 DEPS=(
-    htop tmux vim tree curl git libssl-dev
+    htop tmux vim tree curl git libssl-dev tig
     # https://wiki.archlinux.org/title/SSH_keys -> a very nice read about SSH keys.
     # https://unix.stackexchange.com/questions/90853/how-can-i-run-ssh-add-automatically-without-a-password-prompt
     # ssh-ident seems very interesting for the server side use-case.
