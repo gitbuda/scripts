@@ -4,7 +4,7 @@
 #       https://www.tenforums.com/tutorials/179097-how-change-font-size-windows-terminal-profile-windows-10-a.html
 
 DEPS=(
-    htop tmux vim tree curl git libssl-dev unzip fontconfig
+    htop tmux vim tree curl git libssl-dev unzip fontconfig pdftk
     python3-virtualenv python3-dev
     custom-ssh-ident
     python-is-python3 # REQUIRED_BY: ssh-ident
