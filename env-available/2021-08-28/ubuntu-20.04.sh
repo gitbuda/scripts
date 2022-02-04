@@ -26,7 +26,7 @@ DEPS=(
     dos2unix
     mlocate
     custom-conda
-    custom-cuda
+    custom-cuda custom-amd
     custom-rust
     custom-nvm
     custom-docker
@@ -184,6 +184,14 @@ for pkg in "${DEPS[@]}"; do
             wget https://developer.download.nvidia.com/compute/cuda/11.6.0/local_installers/cuda_11.6.0_510.39.01_linux.run -O cuda.out
             sh cuda.out
         fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-amd ]; then
+        cd "$script_dir"
+        wget http://repo.radeon.com/amdgpu-install/21.40.2/ubuntu/focal/amdgpu-install_21.40.2.40502-1_all.deb -O amdgpu-install_21.40.2.40502-1_all.deb
+        dpkg -i amdgpu-install_21.40.2.40502-1_all.deb
+        amdgpu-install --dryrun
         echo "$pkg is installed." && continue
     fi
 
