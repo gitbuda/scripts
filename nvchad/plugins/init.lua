@@ -10,4 +10,7 @@ return {
          end)
       end,
    },
+   {
+      "~/Workspace/code/memgraph/memgraph/tools/vim-lcp"
+   }
 }

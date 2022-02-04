@@ -22,7 +22,7 @@ M.setup_lsp = function(attach, capabilities)
 
    -- clangd
    lspconfig.clangd.setup {
-      filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+      filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "lcp" },
       on_attach = attach,
       capabilities = capabilities,
       flags = {
