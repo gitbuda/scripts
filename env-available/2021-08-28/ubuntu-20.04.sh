@@ -25,6 +25,7 @@ DEPS=(
     powerstat powertop lm-sensors
     dos2unix
     mlocate
+    grub-customizer
     custom-conda
     custom-cuda
     custom-rust
