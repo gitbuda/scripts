@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# shellcheck disable=SC1091
+source "workspace-util"
+
+script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+session_name="default"
+if [ "$#" -eq 1 ]; then
+  session_name="$1"
+fi
+# shellcheck disable=SC2154
+root_directory="$(pwd)"
+
+start_session "${session_name}" "${root_directory}" \
+  "todo" "" \
+  "todo" "" \
+  "todo" "" \
+  "todo" "" \
+  "todo" "" \
+  "todo" "" \
+  "todo" "" \
+  "search" "" \
+  "vcs" ""
+attach_session "${session_name}"
