@@ -4,31 +4,35 @@
 local M = {}
 
 M.setup_lsp = function(attach, capabilities)
-   local lspconfig = require "lspconfig"
+   local lsp_installer = require "nvim-lsp-installer"
 
-   -- lspservers with default config
+   lsp_installer.settings {
+      ui = {
+         icons = {
+            server_installed = "﫟" ,
+            server_pending = "",
+            server_uninstalled = "✗",
+         },
+      },
+   }
 
-   local servers = { "html", "cssls", "pyright" }
-
-   for _, lsp in ipairs(servers) do
-      lspconfig[lsp].setup {
+   lsp_installer.on_server_ready(function(server)
+      local opts = {
          on_attach = attach,
          capabilities = capabilities,
          flags = {
             debounce_text_changes = 150,
          },
+         settings = {},
       }
-   end
 
-   -- clangd
-   lspconfig.clangd.setup {
-      filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "lcp" },
-      on_attach = attach,
-      capabilities = capabilities,
-      flags = {
-         debounce_text_changes = 150,
-      },
-   }
+      if server.name == 'clangd' then
+        opts.filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "lcp" }
+      end
+
+      server:setup(opts)
+      vim.cmd [[ do User LspAttachBuffers ]]
+   end)
 end
 
 return M

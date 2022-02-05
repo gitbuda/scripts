@@ -1,14 +1,14 @@
 return {
-  {
+   {
       "williamboman/nvim-lsp-installer",
+   },
+   {
+      "folke/trouble.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
       config = function()
-         local lsp_installer = require "nvim-lsp-installer"
-         lsp_installer.on_server_ready(function(server)
-            local opts = {}
-            server:setup(opts)
-            vim.cmd [[ do User LspAttachBuffers ]]
-         end)
-      end,
+         require("trouble").setup {
+         }
+      end
    },
    {
       "~/Workspace/code/memgraph/memgraph/tools/vim-lcp"
