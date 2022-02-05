@@ -5,6 +5,7 @@
 
 DEPS=(
     htop tmux vim tree curl git libssl-dev unzip fontconfig pdftk
+    silversearcher-ag
     python3-virtualenv python3-dev
     custom-ssh-ident
     python-is-python3 # REQUIRED_BY: ssh-ident
@@ -63,6 +64,9 @@ for pkg in "${DEPS[@]}"; do
         if [ ! -d "/home/$SUDO_USER/.config/nvim" ]; then
             GIT_SSH_COMMAND="ssh -i /home/$SUDO_USER/.ssh/github" git clone git@github.com:gitbuda/NvChad.git "/home/$SUDO_USER/.config/nvim"
             chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config/nvim"
+        fi
+        if [ ! -L "/home/$SUDO_USER/.config/nvim/lua/custom" ]; then
+          ln -s "/home/$SUDO_USER/scripts/nvchad" "/home/$SUDO_USER/.config/nvim/lua/custom"
         fi
         echo "$pkg is installed." && continue
     fi
