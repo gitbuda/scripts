@@ -27,7 +27,7 @@ DEPS=(
     mlocate
     grub-customizer
     custom-conda
-    custom-cuda
+    custom-cuda custom-amd
     custom-rust
     custom-nvm
     custom-docker
@@ -184,6 +184,16 @@ for pkg in "${DEPS[@]}"; do
             cd "$script_dir"
             wget https://developer.download.nvidia.com/compute/cuda/11.6.0/local_installers/cuda_11.6.0_510.39.01_linux.run -O cuda.out
             sh cuda.out
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-amd ]; then
+        if ! bin_installed "/usr/bin/amdgpu-install"; then
+            cd "$script_dir"
+            wget http://repo.radeon.com/amdgpu-install/21.50.2/ubuntu/focal/amdgpu-install_21.50.2.50002-1_all.deb -O amdgpu-install_21.50.2.50002-1_all.deb
+            dpkg -i amdgpu-install_21.50.2.50002-1_all.deb
+            amdgpu-install # amdgpu-install --dryrun
         fi
         echo "$pkg is installed." && continue
     fi
