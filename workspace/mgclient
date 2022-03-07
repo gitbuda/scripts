@@ -6,7 +6,7 @@ source "workspace-util"
 script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 session_name="mgclient"
 # shellcheck disable=SC2154
-root_directory="${root_workspace_dir}/code/mgclient"
+root_directory="${root_workspace_dir}/code/memgraph/mgclient"
 repo_url="git@github.com:memgraph/mgclient.git"
 
 if [[ $# -eq 0 ]]; then
