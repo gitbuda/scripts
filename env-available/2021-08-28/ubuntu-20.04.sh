@@ -189,8 +189,8 @@ for pkg in "${DEPS[@]}"; do
 
     if [ "$pkg" == custom-amd ]; then
         cd "$script_dir"
-        wget http://repo.radeon.com/amdgpu-install/21.40.2/ubuntu/focal/amdgpu-install_21.40.2.40502-1_all.deb -O amdgpu-install_21.40.2.40502-1_all.deb
-        dpkg -i amdgpu-install_21.40.2.40502-1_all.deb
+        wget http://repo.radeon.com/amdgpu-install/21.50.2/ubuntu/focal/amdgpu-install_21.50.2.50002-1_all.deb -O amdgpu-install_21.50.2.50002-1_all.deb
+        dpkg -i amdgpu-install_21.50.2.50002-1_all.deb
         amdgpu-install --dryrun
         echo "$pkg is installed." && continue
     fi
