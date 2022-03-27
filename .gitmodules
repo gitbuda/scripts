@@ -16,5 +16,5 @@
 	update = merge
 [submodule "network"]
 	path = network
-	url = https://github.com/gitbuda/network-scripts
+	url = git@github.com:gitbuda/network-scripts.git
 	update = merge
