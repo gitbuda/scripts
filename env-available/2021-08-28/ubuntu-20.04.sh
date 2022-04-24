@@ -1,7 +1,10 @@
 #!/bin/bash -e
 
+# TODO(gitbuda): Add the ability to pick one package.
+# TODO(gitbuda): Add the ability to isolate heavy packages like Conda and Cuda.
+
 DEPS=(
-    htop tmux vim tree curl git libssl-dev tig
+    htop tmux vim tree curl git libssl-dev tig dialog
     # https://wiki.archlinux.org/title/SSH_keys -> a very nice read about SSH keys.
     # https://unix.stackexchange.com/questions/90853/how-can-i-run-ssh-add-automatically-without-a-password-prompt
     # ssh-ident seems very interesting for the server side use-case.
@@ -26,8 +29,8 @@ DEPS=(
     dos2unix
     mlocate
     grub-customizer
-    custom-conda
-    custom-cuda custom-amd
+    # custom-conda
+    # custom-cuda custom-amd clinfo
     custom-rust
     custom-nvm
     custom-docker
@@ -91,8 +94,8 @@ for pkg in "${DEPS[@]}"; do
             cd "$script_dir"
             git clone https://github.com/neovim/neovim
             chown -R "$SUDO_USER:$SUDO_USER" "$script_dir/neovim"
-            git checkout v0.6.1
-            cd neovim && make -j4 && make install
+            cd neovim
+            git checkout v0.7.0 && make CMAKE_BUILD_TYPE=Release -j4 && make install
         fi
         echo "$pkg is installed." && continue
     fi
@@ -123,7 +126,7 @@ for pkg in "${DEPS[@]}"; do
         cd "$script_dir"
         # Use fc-list to see the list of all installed fonts.
         install_font "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraMono.zip" "FiraMono.zip"
-        install_font "https://www.cufonfonts.com/download/font/encode-sans-semi-condensed" "EncodeSansSemiCondensed.zip"
+        # TODO(gitbuda): Fix install_font "https://www.cufonfonts.com/download/font/encode-sans-semi-condensed" "EncodeSansSemiCondensed.zip"
         install_font "https://dl.dafont.com/dl/?f=roboto" "Roboto.zip"
         echo "$pkg is installed." && continue
     fi
