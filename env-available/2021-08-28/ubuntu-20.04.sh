@@ -4,7 +4,7 @@
 # TODO(gitbuda): Add the ability to isolate heavy packages like Conda and Cuda.
 
 DEPS=(
-    htop tmux vim tree curl git libssl-dev tig dialog
+    htop tmux vim tree curl git libssl-dev tig dialog silversearcher-ag
     # https://wiki.archlinux.org/title/SSH_keys -> a very nice read about SSH keys.
     # https://unix.stackexchange.com/questions/90853/how-can-i-run-ssh-add-automatically-without-a-password-prompt
     # ssh-ident seems very interesting for the server side use-case.
