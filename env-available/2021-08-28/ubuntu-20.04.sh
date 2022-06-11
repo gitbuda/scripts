@@ -3,6 +3,8 @@
 # TODO(gitbuda): Add the ability to pick one package.
 # TODO(gitbuda): Add the ability to isolate heavy packages like Conda and Cuda.
 
+# TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
+
 DEPS=(
     htop tmux vim tree curl git libssl-dev tig dialog silversearcher-ag
     # https://wiki.archlinux.org/title/SSH_keys -> a very nice read about SSH keys.
