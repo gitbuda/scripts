@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 # TODO(gitbuda): Add the ability to pick one package.
+# TODO(gitbuda): Add the ability to force reinstallation of a package.
 # TODO(gitbuda): Add the ability to isolate heavy packages like Conda and Cuda.
 
 # TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
@@ -97,7 +98,7 @@ for pkg in "${DEPS[@]}"; do
             git clone https://github.com/neovim/neovim
             chown -R "$SUDO_USER:$SUDO_USER" "$script_dir/neovim"
             cd neovim
-            git checkout v0.7.0 && make CMAKE_BUILD_TYPE=Release -j4 && make install
+            git checkout v0.7.2 && make CMAKE_BUILD_TYPE=Release -j4 && make install
         fi
         echo "$pkg is installed." && continue
     fi

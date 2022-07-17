@@ -135,8 +135,13 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+stacktrace () {
+    # sudo gdb may be needed here, depending on your system settings around ptrace
+    gdb --batch -ex "t a a bt" -p `pgrep $1`
+}
+
 parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 return_emoji() {
   # Don't pollute the return value in case we use it for something else
