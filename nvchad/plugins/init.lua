@@ -26,4 +26,11 @@ return {
          }
       end
    },
+   ["majutsushi/tagbar"] = {
+      config = function()
+         vim.cmd [[
+            let g:tagbar_width = 75
+         ]]
+      end
+   }
 }
