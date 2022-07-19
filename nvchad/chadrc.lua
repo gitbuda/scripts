@@ -14,7 +14,7 @@ M.plugins = {
       nvim_treesitter = userPluginsConfigs.treesitter,
       nvim_tree = userPluginsConfigs.nvimtree,
    },
-   install = userPlugins,
+   user = userPlugins,
 }
 
 return M
