@@ -13,5 +13,6 @@ local opts = { noremap=true, silent=true }
 set_keymap('n', '<leader>gg', '<cmd>:Telescope live_grep<CR>', opts)
 set_keymap('n', '<leader>j', '<cmd>:JABSOpen<CR>', opts)
 set_keymap('n', '<leader>tg', '<cmd>:TagbarToggle<CR>', opts)
+set_keymap('n', '<leader>m', '<cmd>:make<CR>', opts)
 
 vim.diagnostic.disable()

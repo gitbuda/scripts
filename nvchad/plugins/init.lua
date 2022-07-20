@@ -32,5 +32,13 @@ return {
             let g:tagbar_width = 75
          ]]
       end
-   }
+   },
+   ["airblade/vim-gitgutter"] = {
+      config = function()
+         vim.cmd [[
+           let g:gitgutter_diff_base = 'HEAD~3'
+         ]]
+      end
+   },
+   ["tpope/vim-fugitive"] = {},
 }
