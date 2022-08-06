@@ -6,7 +6,7 @@
 # TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
 
 DEPS=(
-    htop tmux vim tree curl git libssl-dev tig dialog silversearcher-ag
+    htop tmux vim tree curl git libssl-dev tig dialog silversearcher-ag ripgrep fd-find
     openssh-server keychain
     # screenkey -> PROBLEM: Seems not to be working properly on 22.04.
     python3-gi gir1.2-gtk-3.0 python3-cairo python3-setuptools python3-distutils-extra fonts-font-awesome slop gir1.2-appindicator3-0.1 screenkey 
@@ -99,6 +99,10 @@ for pkg in "${DEPS[@]}"; do
             chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.fzf"
         fi
         echo "$pkg is installed." && continue
+    fi
+
+    if ! deb_installed "$pkg"; then
+        apt install -y "$pkg"
     fi
 
     echo "$pkg is installed." && continue
