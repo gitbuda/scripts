@@ -6,4 +6,3 @@ rm -rf "$script_dir/neovim"
 rm -rf /home/buda/.config/nvim
 rm -rf /home/buda/.local/share/nvim
 rm -rf /home/buda/.cache/nvim
-
