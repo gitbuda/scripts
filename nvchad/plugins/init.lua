@@ -1,5 +1,4 @@
 return {
-   -- ["williamboman/nvim-lsp-installer"] = {},
    ["neovim/nvim-lspconfig"] = {
       config = function()
          require "plugins.configs.lspconfig"
