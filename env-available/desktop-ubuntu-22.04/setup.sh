@@ -1,7 +1,5 @@
 #!/bin/bash -e
 
-# TODO(gitbuda): Add the ability to pick one package.
-# TODO(gitbuda): Add the ability to force reinstallation of a package.
 # TODO(gitbuda): Add the ability to isolate heavy packages like Conda and Cuda.
 # TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
 
@@ -9,7 +7,8 @@ DEPS=(
     htop tmux vim tree curl git libssl-dev tig dialog silversearcher-ag ripgrep fd-find
     openssh-server keychain
     # screenkey -> PROBLEM: Seems not to be working properly on 22.04.
-    python3-gi gir1.2-gtk-3.0 python3-cairo python3-setuptools python3-distutils-extra fonts-font-awesome slop gir1.2-appindicator3-0.1 screenkey 
+    python3-gi gir1.2-gtk-3.0 python3-cairo python3-setuptools python3-distutils-extra
+    fonts-font-awesome slop gir1.2-appindicator3-0.1 screenkey
     gnome-shell-extensions # Super + extensions -> opens the manager
     # draw-on-you-screen
     # https://ubuntuhandbook.org/index.php/2021/02/start-drawing-on-screen-ubuntu-2004
