@@ -117,6 +117,10 @@ for pkg in "${DEPS[@]}"; do
         echo "$pkg is installed." && continue
     fi
 
+    if ! deb_installed "$pkg"; then
+        apt install -y "$pkg"
+    fi
+
     echo "$pkg is installed." && continue
 done
 
