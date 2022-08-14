@@ -24,7 +24,7 @@ DEPS=(
     # Terminal Profile Setup: FiraMono Medium Regular 11, One Dark Theme, Show scrollbar OFF.
     # Put #ABB2BF as a Default Text Color
     custom-neovim custom-nvchad
-    clang clang-format
+    clang clang-format clang-tidy cppcheck ccache valgrind
     ripgrep
     shellcheck
     gpick gimp inkscape
@@ -32,6 +32,7 @@ DEPS=(
     dos2unix
     mlocate
     grub-customizer
+    # pip-conan
     # custom-conda
     # custom-cuda custom-amd clinfo
     custom-rust
