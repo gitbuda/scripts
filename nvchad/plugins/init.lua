@@ -1,5 +1,10 @@
 return {
-   ["williamboman/nvim-lsp-installer"] = {},
+   ["neovim/nvim-lspconfig"] = {
+      config = function()
+         require "plugins.configs.lspconfig"
+         require "custom.plugins.lspconfig"
+       end,
+   },
    ["folke/trouble.nvim"] = {
       requires = "kyazdani42/nvim-web-devicons",
       config = function()
