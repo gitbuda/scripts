@@ -1,8 +1,8 @@
 -- Use build as a make directory
-vim.cmd [[ let &makeprg="(source /opt/toolchain-v4/activate && cd build && make -j8)" ]]
+vim.cmd [[ let &makeprg="(source /opt/toolchain-v4/activate && cd build && make -j16 memgraph)" ]]
 vim.cmd [[
    function! UpdateMakePrgBuildDir(path)
-      let &makeprg="(cd ".a:path." && make -j8)"
+      let &makeprg="(cd ".a:path." && make -j16)"
    endfunction
 ]]
 
