@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 DEPS=(
-    git htop tmux nvim
+    git htop tmux nvim virtualenv
     custom-nvchad
 )
 
