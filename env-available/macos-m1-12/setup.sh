@@ -1,7 +1,9 @@
 #!/bin/bash -e
 
 DEPS=(
-    git htop tmux nvim virtualenv
+    git htop tmux nvim
+    qcachegrind
+    virtualenv
     custom-nvchad
 )
 
@@ -14,7 +16,7 @@ for pkg in "${DEPS[@]}"; do
     # fi
 
     if [ "$pkg" == custom-nvchad ]; then
-	NVCHAD_DIR="/Users/$USER/.config/nvim"
+        NVCHAD_DIR="/Users/$USER/.config/nvim"
         if [ ! -d "$NVCHAD_DIR" ]; then
             git clone https://github.com/NvChad/NvChad $NVCHAD_DIR --depth 1
         fi
