@@ -11,6 +11,12 @@ script_dir="$( cd "$(dirname "$([ -L "$0" ] && readlink -f "$0" || echo "$0")")"
 # shellcheck disable=SC1090
 source "$script_dir/../../util/os_util"
 
+PUBLIC_DOTFILES="gitconfig gitignore"
+for f in ${PUBLIC_DOTFILES}; do
+    rm -rf "/Users/$USER/.$f"
+    ln -s "${script_dir}/../../dotfiles/$f" "/Users/$USER/.$f"
+done
+
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
     # fi
