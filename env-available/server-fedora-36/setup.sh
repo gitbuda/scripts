@@ -2,6 +2,7 @@
 
 DEPS=(
     htop git vim tmux
+    sysbench stress-ng
 )
 
 script_dir="$( cd "$(dirname "$([ -L "$0" ] && readlink -f "$0" || echo "$0")")" && pwd)"
