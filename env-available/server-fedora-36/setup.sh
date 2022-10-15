@@ -1,11 +1,15 @@
 #!/bin/bash -e
 
 DEPS=(
-    htop git vim tmux
+    htop git vim tmux curl
     python-is-python3 custom-ssh-ident
     sysbench stress-ng
     cmake make gcc clang
     libtool custom-neovim custom-nvchad
+)
+
+REMOVE_DEPS=(
+    zram-generator
 )
 
 script_dir="$( cd "$(dirname "$([ -L "$0" ] && readlink -f "$0" || echo "$0")")" && pwd)"
@@ -32,6 +36,10 @@ for f in ${LOCAL_DOTFILES}; do
 done
 
 dnf update
+
+for pkg in "${REMOVE_DEPS[@]}"; do
+  dnf remove -y "$pkg"
+done
 
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
