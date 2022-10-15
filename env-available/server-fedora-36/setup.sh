@@ -2,6 +2,7 @@
 
 DEPS=(
     htop git vim tmux
+    python-is-python3 custom-ssh-ident
     sysbench stress-ng
     cmake make gcc clang
     libtool custom-neovim custom-nvchad
@@ -30,9 +31,22 @@ for f in ${LOCAL_DOTFILES}; do
     ln -s "${script_dir}/$f" "/home/$SUDO_USER/.$f"
 done
 
+dnf update
+
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
     # fi
+
+    if [ "$pkg" == custom-ssh-ident ]; then
+        ssh_ident_folder="/home/$SUDO_USER/.local/ssh-ident"
+        if [ ! -d "$ssh_ident_folder" ]; then
+            git clone git@github.com:ccontavalli/ssh-ident.git "$ssh_ident_folder"
+            chown -R "$SUDO_USER:$SUDO_USER" "$ssh_ident_folder"
+            cd "$ssh_ident_folder"
+            ln -s ssh-ident ssh
+        fi
+        echo "$pkg is installed." && continue
+    fi
 
     if [ "$pkg" == custom-neovim ]; then
         if ! bin_installed "$script_dir/neovim/build/bin/nvim"; then
