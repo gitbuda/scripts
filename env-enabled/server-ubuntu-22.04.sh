@@ -1,0 +1,1 @@
+../env-available/server-ubuntu-22.04/setup.sh
