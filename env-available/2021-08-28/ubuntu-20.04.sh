@@ -34,6 +34,7 @@ DEPS=(
     grub-customizer
     # https://askubuntu.com/questions/50145/how-to-install-perf-monitoring-tool
     linux-tools-common linux-tools-generic linux-tools-`uname -r`
+    sysbench stress-ng
     # pip-conan
     # custom-conda
     # custom-cuda custom-amd clinfo
