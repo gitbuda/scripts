@@ -2,6 +2,8 @@
 
 DEPS=(
     git htop tmux nvim
+    custom-xcode
+    ffmpeg
     qcachegrind
     virtualenv
     custom-nvchad
@@ -20,6 +22,12 @@ done
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
     # fi
+
+    if [ "$pkg" == custom-xcode ]; then
+        continue # TODO: Check xcode-select -p https://stackoverflow.com/questions/21272479/how-can-i-find-out-if-i-have-xcode-commandline-tools-installed
+        xcode-select --install
+        echo "xcode installed." && continue
+    fi
 
     if [ "$pkg" == custom-nvchad ]; then
         NVCHAD_DIR="/Users/$USER/.config/nvim"
