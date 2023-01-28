@@ -8,10 +8,17 @@ DEPS=(
     ffmpeg
     gnuplot
     pandoc basictex
+    # Valgrind doesn't work on Apple Silicon yet (2023-01-28).
+    # valgrind
     qcachegrind
+    # There is some issue here the .prof file is generated but almost empty.
+    # pprof loads 0 nodes.
+    gperftools
     virtualenv
+    custom-rust
     custom-nvchad
     custom-fonts
+    cargo-flamegraph
 )
 
 script_dir="$( cd "$(dirname "$([ -L "$0" ] && readlink -f "$0" || echo "$0")")" && pwd)"
@@ -56,6 +63,16 @@ for pkg in "${DEPS[@]}"; do
         cd "$script_dir"
         install_font "https://dl.dafont.com/dl/?f=roboto" "Roboto.zip"
         echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-rust ]; then
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+      echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == cargo-flamegraph ]; then
+      cargo install flamegraph
+      echo "$pkg is installed." && continue
     fi
 
     if ! brew_installed "$pkg"; then
