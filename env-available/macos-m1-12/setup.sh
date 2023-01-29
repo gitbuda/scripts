@@ -6,6 +6,7 @@ DEPS=(
     git htop tmux nvim
     custom-xcode
     ffmpeg
+    pdftk-java
     gnuplot
     pandoc basictex
     # Valgrind doesn't work on Apple Silicon yet (2023-01-28).
