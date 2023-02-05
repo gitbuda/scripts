@@ -36,10 +36,16 @@ function install_font {
     fi
 }
 
-PUBLIC_DOTFILES="gitconfig gitignore"
+PUBLIC_DOTFILES="gitconfig gitignore tmux.conf"
 for f in ${PUBLIC_DOTFILES}; do
     rm -rf "/Users/$USER/.$f"
     ln -s "${script_dir}/../../dotfiles/$f" "/Users/$USER/.$f"
+done
+
+LOCAL_DOTFILES="zshrc zshenv"
+for f in ${LOCAL_DOTFILES}; do
+    rm -rf "/Users/$USER/.$f"
+    ln -s "${script_dir}/$f" "/Users/$USER/.$f"
 done
 
 for pkg in "${DEPS[@]}"; do
