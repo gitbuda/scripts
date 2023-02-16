@@ -5,6 +5,7 @@
 DEPS=(
     git htop tmux nvim
     custom-xcode
+    clang-format
     ffmpeg
     pdftk-java
     gnuplot
@@ -16,6 +17,7 @@ DEPS=(
     # pprof loads 0 nodes.
     gperftools
     virtualenv
+    node
     custom-rust
     custom-nvchad
     custom-fonts
