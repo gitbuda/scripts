@@ -1,0 +1,26 @@
+#!/bin/bash
+
+script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck disable=SC1091
+source "$script_directory/../workspace-util"
+
+session_name="mgmigrate"
+# shellcheck disable=SC2154
+root_directory="${root_workspace_dir}/code/memgraph/mgmigrate"
+repo_url="git@github.com:memgraph/mgmigrate.git"
+
+if [[ $# -eq 0 ]]; then
+    start_session "${session_name}" "${root_directory}" \
+        "code" "nvim README.md" \
+        "run" "" \
+        "todo" "" \
+        "todo" "" \
+        "todo" "" \
+        "memgraph" "" \
+        "release" "" \
+        "search" "" \
+        "vcs" ""
+    attach_session "${session_name}"
+else
+    workspace_action "$1" "${session_name}" "${script_directory}" "${root_directory}" "${repo_url}"
+fi
