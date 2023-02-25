@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# shellcheck disable=SC1091
-source "workspace-util"
-
 script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck disable=SC1091
+source "$script_directory/../workspace-util"
+
 session_name="education"
 # shellcheck disable=SC2154
 root_directory="${root_workspace_dir}/code/education"

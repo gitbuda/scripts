@@ -33,12 +33,12 @@ fi
 if [ "$os_distro" = "Ubuntu" ]; then
     apt update
     # apt purge -y
-    apt install -y git vim neovim tmux htop gcc g++ clang clang-format libssl-dev silversearcher-ag fzf shellcheck procps
+    apt install -y git vim neovim tmux htop gcc g++ clang clang-format libssl-dev silversearcher-ag fzf shellcheck procps make cmake
 fi
 if [ "$os_distro" = "Fedora" ]; then
     dnf update
     # dnf remove -y
-    dnf install -y git vim neovim tmux htop gcc g++ clang openssl-devel fzf shellcheck procps-ng
+    dnf install -y git vim neovim tmux htop gcc g++ clang openssl-devel fzf shellcheck procps-ng make cmake
 fi
 
 sudo -H -u "$SUDO_USER" bash -c "mkdir -p $HOME/.ssh"
