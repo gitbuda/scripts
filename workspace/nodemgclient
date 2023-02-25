@@ -6,7 +6,7 @@ source "$script_directory/../workspace-util"
 
 session_name="nodemgclient"
 # shellcheck disable=SC2154
-root_directory="${root_workspace_dir}/code/nodemgclient"
+root_directory="${root_workspace_dir}/code/memgraph/nodemgclient"
 repo_url="git@github.com:memgraph/nodemgclient.git"
 
 if [[ $# -eq 0 ]]; then

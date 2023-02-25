@@ -6,7 +6,7 @@ source "$script_directory/../workspace-util"
 
 session_name="gasoline"
 # shellcheck disable=SC2154
-root_directory="${root_workspace_dir}/code/gasoline"
+root_directory="${root_workspace_dir}/code/memgraph/gasoline"
 repo_url="git@github.com:memgraph/gasoline.git"
 
 if [[ $# -eq 0 ]]; then

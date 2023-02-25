@@ -6,7 +6,7 @@ source "$script_directory/../workspace-util"
 
 session_name="rsmgclient"
 # shellcheck disable=SC2154
-root_directory="${root_workspace_dir}/code/rsmgclient"
+root_directory="${root_workspace_dir}/code/memgraph/rsmgclient"
 repo_url="git@github.com:memgraph/rsmgclient.git"
 
 if [[ $# -eq 0 ]]; then

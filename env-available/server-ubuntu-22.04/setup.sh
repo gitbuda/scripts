@@ -138,3 +138,6 @@ fi
 if ! grep -qF "$HOME/scripts/workspace" "$HOME/.bashrc" ; then
     echo "PATH=\$PATH:$HOME/scripts/workspace" >> "$HOME/.bashrc"
 fi
+if ! grep -qF "$HOME/scripts/git" "$HOME/.bashrc" ; then
+    echo "PATH=\$PATH:$HOME/scripts/git" >> "$HOME/.bashrc"
+fi
