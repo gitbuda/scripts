@@ -5,14 +5,12 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 if [ "$EUID" -eq 0 ]; then
-    SUDO_USER="root"
-    HOME="/root"
-else
     if [ "$SUDO_USER" == "" ]; then
-        echo "Please run as sudo."
-        exit 1
+        SUDO_USER="root"
+        HOME="/root"
+    else
+        HOME=/home/$SUDO_USER
     fi
-    HOME=/home/$SUDO_USER
 fi
 
 # os_type=""
