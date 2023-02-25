@@ -1,23 +1,28 @@
 #!/bin/bash -e
 
-# TODO(gitbuda): Make it work under Docker/root user
-
 if [ "$EUID" -ne 0 ]; then
     echo "Please run as root."
     exit 1
 fi
-if [ "$SUDO_USER" == "" ]; then
-    echo "Please run as sudo."
-    exit 1
+if [ "$EUID" -eq 0 ]; then
+    SUDO_USER="root"
+    HOME="/root"
+else
+    if [ "$SUDO_USER" == "" ]; then
+        echo "Please run as sudo."
+        exit 1
+    fi
+    HOME=/home/$SUDO_USER
 fi
-HOME=/home/$SUDO_USER
 
-os_type=""
+# os_type=""
 os_distro=""
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    os_type="Linux"
-    if [ -n "$(uname -a | grep Ubuntu)" ]; then
+    # os_type="Linux"
+    if grep -qF "Ubuntu" /etc/os-release ; then
         os_distro="Ubuntu"
+    elif grep -qF "Fedora" /etc/os-release ; then
+        os_distro="Fedora"
     else
         echo "Unknown OS"
         exit 1
@@ -30,7 +35,12 @@ fi
 if [ "$os_distro" = "Ubuntu" ]; then
     apt update
     # apt purge -y
-    apt install -y git vim neovim tmux htop gcc g++ clang clang-format libssl-dev silversearcher-ag fzf shellcheck
+    apt install -y git vim neovim tmux htop gcc g++ clang clang-format libssl-dev silversearcher-ag fzf shellcheck procps
+fi
+if [ "$os_distro" = "Fedora" ]; then
+    dnf update
+    # dnf remove -y
+    dnf install -y git vim neovim tmux htop gcc g++ clang openssl-devel fzf shellcheck procps-ng
 fi
 
 sudo -H -u "$SUDO_USER" bash -c "mkdir -p $HOME/.ssh"
@@ -52,4 +62,17 @@ EOF
 fi
 if ! grep -qF "source $HOME/.local/ssh-agent-setup" "$HOME/.bashrc" ; then
     echo "source $HOME/.local/ssh-agent-setup" >> "$HOME/.bashrc"
+fi
+
+gitconfig_path="$HOME/.gitconfig"
+if [ ! -f "$gitconfig_path" ]; then
+    wget https://raw.githubusercontent.com/gitbuda/dotfiles/master/gitconfig -O $HOME/.gitconfig
+fi
+
+bash_aliases_path="$HOME/.bash_aliases"
+if [ ! -f "$bash_aliases_path" ]; then
+    wget https://raw.githubusercontent.com/gitbuda/dotfiles/master/bash_aliases -O $HOME/.bash_aliases
+fi
+if ! grep -qF "$bash_aliases_path" "$HOME/.bashrc" ; then
+    echo "source $bash_aliases_path" >> "$HOME/.bashrc"
 fi
