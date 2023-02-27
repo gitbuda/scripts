@@ -64,12 +64,16 @@ fi
 
 gitconfig_path="$HOME/.gitconfig"
 if [ ! -f "$gitconfig_path" ]; then
-    wget https://raw.githubusercontent.com/gitbuda/dotfiles/master/gitconfig -O $HOME/.gitconfig
+    wget https://raw.githubusercontent.com/gitbuda/dotfiles/master/gitconfig -O "$gitconfig_path"
+fi
+gitignore_path="$HOME/.gitignore"
+if [ ! -f "$gitignore_path" ]; then
+    wget https://raw.githubusercontent.com/gitbuda/dotfiles/master/gitignore -O "$gitignore_path"
 fi
 
 bash_aliases_path="$HOME/.bash_aliases"
 if [ ! -f "$bash_aliases_path" ]; then
-    wget https://raw.githubusercontent.com/gitbuda/dotfiles/master/bash_aliases -O $HOME/.bash_aliases
+    wget https://raw.githubusercontent.com/gitbuda/dotfiles/master/bash_aliases -O "$bash_aliases_path"
 fi
 if ! grep -qF "$bash_aliases_path" "$HOME/.bashrc" ; then
     echo "source $bash_aliases_path" >> "$HOME/.bashrc"

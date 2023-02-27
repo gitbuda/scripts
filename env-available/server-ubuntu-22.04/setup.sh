@@ -1,22 +1,22 @@
 #!/bin/bash -e
 
-# TODO(gitbuda): Add the ability to isolate heavy packages like Conda and Cuda.
-# TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
-
 RM_DEPS=(
 #   rm_neovim rm_nvchad
 )
 DEPS=(
-    htop tmux vim tree curl git libssl-dev tig dialog silversearcher-ag zsh
-    make cmake pkg-config libtool-bin unzip gettext
+    htop tmux vim tree curl git tig dialog silversearcher-ag zsh plocate
+    custom-fzf
+    make cmake libssl-dev pkg-config libtool-bin unzip gettext
     python3-dbg
+    openjdk-17-jre
     ansible
     memtester
+    heaptrack
     custom-neovim custom-nvchad
     custom-nvm
     custom-rust
-    custom-fzf
 )
+# TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
 
 script_dir="$( cd "$(dirname "$([ -L "$0" ] && readlink -f "$0" || echo "$0")")" && pwd)"
 # shellcheck disable=SC1090
@@ -75,7 +75,7 @@ for pkg in "${DEPS[@]}"; do
     fi
 
     if [ "$pkg" == custom-neovim ]; then
-	if ! bin_installed "$script_dir/neovim/build/bin/nvim"; then
+        if ! bin_installed "$script_dir/neovim/build/bin/nvim"; then
             cd "$script_dir"
             git clone https://github.com/neovim/neovim
             cd neovim
@@ -126,7 +126,6 @@ for pkg in "${DEPS[@]}"; do
     if ! deb_installed "$pkg"; then
         apt install -y "$pkg"
     fi
-
     echo "$pkg is installed." && continue
 done
 
