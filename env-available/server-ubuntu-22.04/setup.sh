@@ -54,7 +54,7 @@ if [ "$SUDO_USER" == "" ]; then
 fi
 HOME=/home/$SUDO_USER
 
-DOTFILES=""
+DOTFILES="bashrc tmux.conf"
 for f in ${DOTFILES}; do
     rm -rf "/home/$SUDO_USER/.$f"
     sudo -H -u "$SUDO_USER" bash -c "ln -s ${script_dir}/$f /home/$SUDO_USER/.$f"
