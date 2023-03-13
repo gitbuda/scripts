@@ -12,6 +12,7 @@ DEPS=(
     ansible
     memtester
     heaptrack
+    sysstat iotop
     custom-neovim custom-nvchad
     custom-nvm
     custom-rust
