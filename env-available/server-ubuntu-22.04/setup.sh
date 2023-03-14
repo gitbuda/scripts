@@ -7,6 +7,8 @@ DEPS=(
     htop tmux vim tree curl git tig dialog silversearcher-ag zsh plocate
     custom-fzf
     make cmake libssl-dev pkg-config libtool-bin unzip gettext
+    ripgrep
+    exuberant-ctags
     python3-dbg
     openjdk-17-jre
     ansible

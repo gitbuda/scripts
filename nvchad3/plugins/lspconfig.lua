@@ -5,8 +5,16 @@ local lspconfig = require "lspconfig"
 local servers = { "clangd", "rust_analyzer", "pyright" }
 
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
+  local opts = {
     on_attach = on_attach,
     capabilities = capabilities,
   }
+  if lsp == "clangd" then
+    opts.filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "lcp" }
+    opts.cmd = {
+      "clangd",
+      "--clang-tidy",
+    }
+  end
+  lspconfig[lsp].setup(opts)
 end
