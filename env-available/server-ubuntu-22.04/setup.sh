@@ -18,6 +18,10 @@ DEPS=(
     custom-neovim custom-nvchad
     custom-nvm
     custom-rust
+    # custom-just # https://just.systems/man/en/chapter_4.html -> cargo install just
+    # custom-mevi # https://github.com/fasterthanlime/mevi
+      # sudo sysctl -w vm.unprivileged_userfaultfd=1
+      # cargo install just trunk
 )
 # TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
 
@@ -56,8 +60,14 @@ if [ "$SUDO_USER" == "" ]; then
 fi
 HOME=/home/$SUDO_USER
 
-DOTFILES="bashrc tmux.conf"
-for f in ${DOTFILES}; do
+PUBLIC_DOTFILES="bash_aliases"
+for f in ${PUBLIC_DOTFILES}; do
+    rm -rf "/home/$SUDO_USER/.$f"
+    sudo -H -u "$SUDO_USER" bash -c "ln -s ${script_dir}/../../dotfiles/$f /home/$SUDO_USER/.$f"
+done
+
+LOCAL_DOTFILES="bashrc tmux.conf"
+for f in ${LOCAL_DOTFILES}; do
     rm -rf "/home/$SUDO_USER/.$f"
     sudo -H -u "$SUDO_USER" bash -c "ln -s ${script_dir}/$f /home/$SUDO_USER/.$f"
 done
