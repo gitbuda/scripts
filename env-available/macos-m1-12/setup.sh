@@ -1,9 +1,21 @@
 #!/bin/bash -e
 
 # TODO: xelatex https://gist.github.com/peterhurford/75957ba9335e755013b87254ec85fab1
+#
+# TODO: skip cargo stuff
+#
+# TODO: python3 -m pip install --user ansible
+# TODO: PATH=$PATH:/Users/buda/Library/Python10/bin
+#
+# TODO: https://github.com/ohmyzsh/ohmyzsh ~/.oh-my-zsh dir
+#       https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
+#
+# TODO: Install fish -> https://gist.github.com/idleberg/9c7aaa3abedc58694df5
+#       fish_config command + the whole ~/.config/fish/ folder
 
 DEPS=(
-    git htop tmux nvim
+    wget git htop tmux nvim
+    fish
     custom-xcode
     clang-format
     ffmpeg
