@@ -1,7 +1,8 @@
 #!/bin/bash -e
 
 RM_DEPS=(
-#   rm_neovim rm_nvchad
+    # rm_neovim
+    # rm_nvchad
 )
 DEPS=(
     htop tmux vim tree curl git tig dialog silversearcher-ag zsh plocate
@@ -9,19 +10,20 @@ DEPS=(
     make cmake libssl-dev pkg-config libtool-bin unzip gettext
     ripgrep
     exuberant-ctags
-    python3-dbg
+    python3-dbg python3.10-venv
     openjdk-17-jre
     ansible
     memtester
     heaptrack
-    sysstat iotop
-    custom-neovim custom-nvchad
+    sysstat iotop nvtop
     custom-nvm
     custom-rust
+    custom-neovim custom-nvchad
     # custom-just # https://just.systems/man/en/chapter_4.html -> cargo install just
     # custom-mevi # https://github.com/fasterthanlime/mevi
       # sudo sysctl -w vm.unprivileged_userfaultfd=1
       # cargo install just trunk
+    cargo-tree-sitter
 )
 # TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
 
@@ -92,7 +94,7 @@ for pkg in "${DEPS[@]}"; do
             cd "$script_dir"
             git clone https://github.com/neovim/neovim
             cd neovim
-            git checkout v0.8.0
+            git checkout v0.8.3
             chown -R "$SUDO_USER:$SUDO_USER" "$script_dir/neovim"
             sudo -H -u "$SUDO_USER" bash -c "make CMAKE_BUILD_TYPE=Release -j4"
             make install
@@ -102,11 +104,13 @@ for pkg in "${DEPS[@]}"; do
 
     if [ "$pkg" == custom-nvchad ]; then
         if [ ! -d "/home/$SUDO_USER/.config/nvim" ]; then
-            GIT_SSH_COMMAND="ssh -i /home/$SUDO_USER/.ssh/github" git clone git@github.com:NvChad/NvChad.git "/home/$SUDO_USER/.config/nvim" --depth 1
+            sudo -H -u "$SUDO_USER" bash -c "git clone git@github.com:NvChad/NvChad.git '/home/$SUDO_USER/.config/nvim'"
             chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config/nvim"
+            cd "/home/$SUDO_USER/.config/nvim"
+            git checkout v2.0
         fi
         if [ ! -L "/home/$SUDO_USER/.config/nvim/lua/custom" ]; then
-            ln -s "/home/$SUDO_USER/scripts/nvchad3" "/home/$SUDO_USER/.config/nvim/lua/custom"
+            ln -s "/home/$SUDO_USER/scripts/nvchad-v2.0" "/home/$SUDO_USER/.config/nvim/lua/custom"
         fi
         echo "$pkg is installed." && continue
     fi
@@ -133,6 +137,11 @@ for pkg in "${DEPS[@]}"; do
             /home/$SUDO_USER/.fzf/install
             chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.fzf"
         fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == cargo-tree-sitter ]; then
+        sudo -H -u "$SUDO_USER" bash -c "/home/$SUDO_USER/.cargo/bin/cargo install tree-sitter-cli"
         echo "$pkg is installed." && continue
     fi
 
