@@ -13,6 +13,11 @@
 # TODO: Install fish -> https://gist.github.com/idleberg/9c7aaa3abedc58694df5
 #       fish_config command + the whole ~/.config/fish/ folder
 
+RM_DEPS=(
+    # rm_neovim
+    # rm_nvchad
+)
+
 DEPS=(
     wget git htop tmux nvim
     fish
@@ -31,6 +36,7 @@ DEPS=(
     virtualenv
     node
     custom-rust
+    custom-nvim
     custom-nvchad
     custom-fonts
     cargo-flamegraph
@@ -39,6 +45,17 @@ DEPS=(
 script_dir="$( cd "$(dirname "$([ -L "$0" ] && readlink -f "$0" || echo "$0")")" && pwd)"
 # shellcheck disable=SC1090
 source "$script_dir/../../util/os_util"
+
+function rm_neovim {
+    echo "Removing neovim"
+    rm -rf $script_dir/neovim
+}
+function rm_nvchad {
+    echo "Removing nvchad"
+    rm -rf $1/.config/nvim
+    rm -rf $1/.local/share/nvim
+    rm -rf $1/.cache/nvim
+}
 
 function install_font {
     download_link=$1
@@ -62,6 +79,10 @@ for f in ${LOCAL_DOTFILES}; do
     ln -s "${script_dir}/$f" "/Users/$USER/.$f"
 done
 
+for rm_pkg in "${RM_DEPS[@]}"; do
+    "$rm_pkg" "$HOME"
+done
+
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
     # fi
@@ -72,10 +93,27 @@ for pkg in "${DEPS[@]}"; do
         echo "xcode installed." && continue
     fi
 
+    if [ "$pkg" == custom-nvim ]; then
+        if ! bin_installed "$script_dir/neovim/build/bin/nvim"; then
+            cd "$script_dir"
+            git clone https://github.com/neovim/neovim
+            cd neovim
+            git checkout v0.8.3
+            make CMAKE_BUILD_TYPE=Release -j4
+            sudo make install
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
     if [ "$pkg" == custom-nvchad ]; then
         NVCHAD_DIR="/Users/$USER/.config/nvim"
         if [ ! -d "$NVCHAD_DIR" ]; then
-            git clone https://github.com/NvChad/NvChad $NVCHAD_DIR --depth 1
+            git clone https://github.com/NvChad/NvChad $NVCHAD_DIR
+            cd $NVCHAD_DIR
+            git checkout v2.0
+        fi
+        if [ ! -L "$HOME/.config/nvim/lua/custom" ]; then
+            ln -s "$script_dir/../../nvchad-v2.0" "$HOME/.config/nvim/lua/custom"
         fi
         echo "$pkg is installed." && continue
     fi
