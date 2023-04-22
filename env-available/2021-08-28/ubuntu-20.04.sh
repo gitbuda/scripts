@@ -7,7 +7,7 @@
 # TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
 
 DEPS=(
-    htop tmux vim tree curl git libssl-dev tig dialog silversearcher-ag ctags
+    htop tmux vim tree curl git libssl-dev tig dialog silversearcher-ag ctags net-tools
     # https://wiki.archlinux.org/title/SSH_keys -> a very nice read about SSH keys.
     # https://unix.stackexchange.com/questions/90853/how-can-i-run-ssh-add-automatically-without-a-password-prompt
     # ssh-ident seems very interesting for the server side use-case.
@@ -32,6 +32,11 @@ DEPS=(
     dos2unix
     mlocate
     grub-customizer
+    # https://askubuntu.com/questions/50145/how-to-install-perf-monitoring-tool
+    linux-tools-common linux-tools-generic linux-tools-`uname -r`
+    sysbench stress-ng
+    gnuplot
+    pandoc texlive-xetex texlive-fonts-extra
     # pip-conan
     # custom-conda
     # custom-cuda custom-amd clinfo
@@ -56,6 +61,8 @@ if [ "$SUDO_USER" == "" ]; then
 fi
 HOME=/home/$SUDO_USER
 
+
+
 for f in ${DOTFILES}; do
     rm -rf "/home/$SUDO_USER/.$f"
     sudo -H -u "$SUDO_USER" bash -c "ln -s ${script_dir}/$f /home/$SUDO_USER/.$f"
@@ -64,12 +71,15 @@ done
 function install_font {
     download_link=$1
     local_file_name=$2
-    if [ ! -f "$local_file_name" ]; then
-        wget "$download_link" -O "$local_file_name"
+    # TODO(gitbuda): Add an ability to inject local file.
+    # if [ ! -f "$local_file_name" ]; then
+        # wget "$download_link" -O "$local_file_name"
         mkdir -p "/home/$SUDO_USER/.fonts"
         unzip "$local_file_name" -d "/home/$SUDO_USER/.fonts"
+        # Required because of Latex.
+        unzip "$local_file_name" -d "/usr/share/fonts/truetype"
         fc-cache -fv
-    fi
+    # fi
 }
 
 for pkg in "${DEPS[@]}"; do
@@ -129,9 +139,9 @@ for pkg in "${DEPS[@]}"; do
     if [ "$pkg" == custom-fonts ]; then
         cd "$script_dir"
         # Use fc-list to see the list of all installed fonts.
-        install_font "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraMono.zip" "FiraMono.zip"
-        # TODO(gitbuda): Fix install_font "https://www.cufonfonts.com/download/font/encode-sans-semi-condensed" "EncodeSansSemiCondensed.zip"
+        install_font "https://www.cufonfonts.com/download/font/encode-sans-semi-condensed" "Encode_Sans.zip"
         install_font "https://dl.dafont.com/dl/?f=roboto" "Roboto.zip"
+        install_font "https://www.fontsquirrel.com/fonts/download/cousine" "Cousine.zip"
         echo "$pkg is installed." && continue
     fi
 

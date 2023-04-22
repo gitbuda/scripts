@@ -1,5 +1,10 @@
 return {
-   ["williamboman/nvim-lsp-installer"] = {},
+   ["neovim/nvim-lspconfig"] = {
+      config = function()
+         require "plugins.configs.lspconfig"
+         require "custom.plugins.lspconfig"
+       end,
+   },
    ["folke/trouble.nvim"] = {
       requires = "kyazdani42/nvim-web-devicons",
       config = function()
@@ -41,4 +46,9 @@ return {
       end
    },
    ["tpope/vim-fugitive"] = {},
+   ["https://git.sr.ht/~whynothugo/lsp_lines.nvim"] = {
+      config = function()
+         require("lsp_lines").setup {}
+      end
+   },
 }

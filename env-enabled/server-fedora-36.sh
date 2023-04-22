@@ -1,0 +1,1 @@
+../env-available/server-fedora-36/setup.sh

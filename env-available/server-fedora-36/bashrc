@@ -1,0 +1,7 @@
+# Load bash_aliases
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# Add ssh-ident to PATH
+export PATH="/home/$USER/.local/ssh-ident:$PATH"

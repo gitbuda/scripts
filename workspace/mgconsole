@@ -4,18 +4,18 @@ script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # shellcheck disable=SC1091
 source "$script_directory/../workspace-util"
 
-session_name="mage"
+session_name="mgconsole"
 # shellcheck disable=SC2154
-root_directory="${root_workspace_dir}/code/memgraph/mage"
-repo_url="git@github.com:memgraph/mage.git"
+root_directory="${root_workspace_dir}/code/memgraph/mgconsole"
+repo_url="git@github.com:memgraph/mgconsole.git"
 
 if [[ $# -eq 0 ]]; then
     start_session "${session_name}" "${root_directory}" \
         "code" "nvim README.md" \
-        "root" "" \
-        "lang_cpp" "" \
-        "lang_py" "" \
-        "lang_rs" "" \
+        "run" "" \
+        "todo" "" \
+        "todo" "" \
+        "todo" "" \
         "memgraph" "" \
         "release" "" \
         "search" "" \
