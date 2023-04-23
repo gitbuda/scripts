@@ -3,6 +3,10 @@
 # TODO(gitbuda): Add the ability to isolate heavy packages like Conda and Cuda.
 # TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
 
+RM_DEPS=(
+    rm_neovim
+    rm_nvchad
+)
 DEPS=(
     htop tmux vim tree curl git libssl-dev tig dialog silversearcher-ag ripgrep fd-find
     openssh-server keychain
@@ -34,10 +38,26 @@ if [ "$SUDO_USER" == "" ]; then
 fi
 HOME=/home/$SUDO_USER
 
+function rm_neovim {
+    echo "Removing neovim"
+    rm -rf $script_dir/neovim
+}
+
+function rm_nvchad {
+    echo "Removing nvchad"
+    rm -rf $1/.config/nvim
+    rm -rf $1/.local/share/nvim
+    rm -rf $1/.cache/nvim
+}
+
 DOTFILES=""
 for f in ${DOTFILES}; do
     rm -rf "/home/$SUDO_USER/.$f"
     sudo -H -u "$SUDO_USER" bash -c "ln -s ${script_dir}/$f /home/$SUDO_USER/.$f"
+done
+
+for rm_pkg in "${RM_DEPS[@]}"; do
+    "$rm_pkg" "$HOME"
 done
 
 function install_font {
@@ -63,23 +83,27 @@ for pkg in "${DEPS[@]}"; do
     fi
 
     if [ "$pkg" == custom-neovim ]; then
-	if ! bin_installed "$script_dir/neovim/build/bin/nvim"; then
+        if ! bin_installed "$script_dir/neovim/build/bin/nvim"; then
             cd "$script_dir"
             git clone https://github.com/neovim/neovim
-            chown -R "$SUDO_USER:$SUDO_USER" "$script_dir/neovim"
             cd neovim
-            git checkout v0.7.2 && make CMAKE_BUILD_TYPE=Release -j4 && make install
+            git checkout v0.8.3
+            chown -R "$SUDO_USER:$SUDO_USER" "$script_dir/neovim"
+            sudo -H -u "$SUDO_USER" bash -c "make CMAKE_BUILD_TYPE=Release -j4"
+            make install
         fi
         echo "$pkg is installed." && continue
     fi
 
     if [ "$pkg" == custom-nvchad ]; then
         if [ ! -d "/home/$SUDO_USER/.config/nvim" ]; then
-            GIT_SSH_COMMAND="ssh -i /home/$SUDO_USER/.ssh/github" git clone git@github.com:NvChad/NvChad.git "/home/$SUDO_USER/.config/nvim"
+            sudo -H -u "$SUDO_USER" bash -c "git clone git@github.com:NvChad/NvChad.git '/home/$SUDO_USER/.config/nvim'"
             chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config/nvim"
+            cd "/home/$SUDO_USER/.config/nvim"
+            git checkout v2.0
         fi
         if [ ! -L "/home/$SUDO_USER/.config/nvim/lua/custom" ]; then
-          ln -s "/home/$SUDO_USER/scripts/nvchad" "/home/$SUDO_USER/.config/nvim/lua/custom"
+            ln -s "/home/$SUDO_USER/scripts/nvchad-v2.0" "/home/$SUDO_USER/.config/nvim/lua/custom"
         fi
         echo "$pkg is installed." && continue
     fi
