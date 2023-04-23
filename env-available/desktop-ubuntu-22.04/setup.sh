@@ -4,8 +4,8 @@
 # TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
 
 RM_DEPS=(
-    rm_neovim
-    rm_nvchad
+    # rm_neovim
+    # rm_nvchad
 )
 DEPS=(
     htop tmux vim tree curl git libssl-dev tig dialog silversearcher-ag ripgrep fd-find
@@ -70,6 +70,8 @@ function install_font {
         fc-cache -fv
     fi
 }
+
+install_font "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Lilex.zip" "$script_dir/lilex.font"
 
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
