@@ -3,7 +3,7 @@
 DEPS=(
     htop git vim tmux curl
     python-is-python3 custom-ssh-ident
-    sysbench stress-ng
+    sysbench stress-ng lm_sensors
     cmake make gcc clang
     libtool custom-neovim custom-nvchad
 )
