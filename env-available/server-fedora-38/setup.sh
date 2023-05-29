@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 DEPS=(
-    htop git vim tmux curl
+    htop git vim tmux curl the_silver_searcher
     python-is-python3 custom-ssh-ident
     sysbench stress-ng lm_sensors
     cmake make gcc clang
