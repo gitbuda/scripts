@@ -6,6 +6,8 @@ DEPS=(
     sysbench stress-ng lm_sensors
     cmake make gcc clang
     libtool custom-neovim custom-nvchad
+    ansible # TODO(gitbuda): dnf_installed doesn't work with the ansible package...
+    strace
 )
 
 REMOVE_DEPS=(
