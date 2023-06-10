@@ -1,11 +1,13 @@
 #!/bin/bash -e
 
 DEPS=(
-    htop git vim tmux curl
+    htop git vim tmux curl the_silver_searcher
     python-is-python3 custom-ssh-ident
-    sysbench stress-ng
+    sysbench stress-ng lm_sensors
     cmake make gcc clang
     libtool custom-neovim custom-nvchad
+    ansible # TODO(gitbuda): dnf_installed doesn't work with the ansible package...
+    strace
 )
 
 REMOVE_DEPS=(
