@@ -151,6 +151,22 @@ for pkg in "${DEPS[@]}"; do
     echo "$pkg is installed." && continue
 done
 
+# https://wiki.archlinux.org/title/SSH_keys
+ssh_agent_setup_path="$HOME/.local/ssh-agent-setup"
+if [ ! -f "$ssh_agent_setup_path" ]; then
+    cat >"$ssh_agent_setup_path" << EOF
+if ! pgrep -u "$SUDO_USER" ssh-agent > /dev/null; then
+    ssh-agent -t 24h > "$HOME/.ssh/ssh-agent.env"
+fi
+if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+    source "$HOME/.ssh/ssh-agent.env" >/dev/null
+fi
+EOF
+fi
+if ! grep -qF "source $HOME/.local/ssh-agent-setup" "$HOME/.bashrc" ; then
+    echo "source $HOME/.local/ssh-agent-setup" >> "$HOME/.bashrc"
+fi
+
 chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config"
 chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.cache"
 if ! grep -qF "$HOME/scripts/util" "$HOME/.bashrc" ; then
