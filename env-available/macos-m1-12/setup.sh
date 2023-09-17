@@ -9,6 +9,14 @@
 #       https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
 # TODO: Install fish -> https://gist.github.com/idleberg/9c7aaa3abedc58694df5
 #       fish_config command + the whole ~/.config/fish/ folder
+#
+# TODO:
+#     brew install mkdocs
+#
+# TODO:
+#     brew install sphinx-doc
+#     brew link sphinx-doc --force # https://stackoverflow.com/questions/36137496/os-x-install-of-sphinx-the-sphinx-build-and-sphinx-quickstart-not-found
+#     pip3 install m2r
 
 RM_DEPS=(
     # rm_neovim
@@ -18,6 +26,7 @@ RM_DEPS=(
 DEPS=(
     wget git htop tmux
     fish
+    shellcheck
     custom-xcode
     clang-format
     ffmpeg

@@ -4,6 +4,14 @@ local overrides = require("custom.configs.overrides")
 local plugins = {
 
   -- Override plugin definition options
+  -- {
+  --    "nvim-telescope/telescope.nvim",
+  --    config = function()
+  --       require("jabs").setup {
+  --          defaults = { file_ignore_patterns = { "^./.git/", "^node_modules/", "^vendor/", "^target/" } }
+  --       }
+  --    end,
+  -- },
 
   {
     "neovim/nvim-lspconfig",
