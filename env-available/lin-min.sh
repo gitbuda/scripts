@@ -43,6 +43,7 @@ if [ "$os_distro" = "Ubuntu" ]; then
     apt update -y
     # apt purge -y
     apt install -y wget git vim neovim tmux htop gcc g++ clang clang-format libssl-dev silversearcher-ag fzf shellcheck procps make cmake
+    apt install -y ansible
 fi
 if [ "$os_distro" = "CentOS" ]; then
     yum update -y
