@@ -19,8 +19,7 @@ DEPS=(
     memtester
     heaptrack
     sysstat iotop nvtop
-    nvidia-cuda-toolkit
-    custom-cudnn
+    nvidia-cuda-toolkit custom-cudnn custom-nccl custom-cutensor custom-cusparselt
     custom-nvm
     custom-rust
     custom-neovim custom-nvchad
@@ -100,6 +99,44 @@ for pkg in "${DEPS[@]}"; do
         if ! deb_installed "libcudnn8-dev"; then
           dpkg -i "$installed_install_path/libcudnn8-dev_8.8.0.121-1+cuda12.0_amd64.deb"
           echo "libcudnn-dev installed"
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-nccl ]; then
+        if [ ! -f "/usr/local/include/nccl.h" ]; then
+          rm -rf nccl
+          git clone https://github.com/NVIDIA/nccl.git
+          cd "$script_dir/nccl"
+          # NOTE: CUDA_HOME depends on how cuda is actually installed.
+          # NOTE: g++-10 is here because of https://github.com/NVIDIA/nccl/issues/102
+          CXX=/usr/bin/g++-10 make -j src.build CUDA_HOME=/usr/lib/nvidia-cuda-toolkit
+          make install
+          cd "$script_dir"
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-cutensor ]; then
+        # https://developer.nvidia.com/cutensor-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_local
+        if ! deb_installed "libcutensor2"; then
+          curl -O -J -L https://developer.download.nvidia.com/compute/cutensor/2.0.0/local_installers/cutensor-local-repo-ubuntu2204-2.0.0_1.0-1_amd64.deb
+          dpkg -i cutensor-local-repo-ubuntu2204-2.0.0_1.0-1_amd64.deb
+          cp /var/cutensor-local-repo-ubuntu2204-2.0.0/cutensor-*-keyring.gpg /usr/share/keyrings/
+          apt update
+          apt-get -y install libcutensor2 libcutensor-dev libcutensor-doc
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-cusparselt ]; then
+        # https://developer.nvidia.com/cusparselt-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_local
+        if ! deb_installed "libcusparselt0"; then
+          curl -O -J -L https://developer.download.nvidia.com/compute/cusparselt/0.5.2/local_installers/cusparselt-local-repo-ubuntu2204-0.5.2_1.0-1_amd64.deb
+          dpkg -i cusparselt-local-repo-ubuntu2204-0.5.2_1.0-1_amd64.deb
+          cp /var/cusparselt-local-repo-ubuntu2204-0.5.2/cusparselt-*-keyring.gpg /usr/share/keyrings/
+          apt-get update
+          apt-get -y install libcusparselt0 libcusparselt-dev
         fi
         echo "$pkg is installed." && continue
     fi
