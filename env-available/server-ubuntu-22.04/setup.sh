@@ -1,4 +1,7 @@
 #!/bin/bash -e
+script_dir="$( cd "$(dirname "$([ -L "$0" ] && readlink -f "$0" || echo "$0")")" && pwd)"
+# shellcheck disable=SC1090
+source "$script_dir/../../util/os_util"
 
 RM_DEPS=(
     # rm_neovim
@@ -16,6 +19,8 @@ DEPS=(
     memtester
     heaptrack
     sysstat iotop nvtop
+    nvidia-cuda-toolkit
+    custom-cudnn
     custom-nvm
     custom-rust
     custom-neovim custom-nvchad
@@ -26,10 +31,6 @@ DEPS=(
     cargo-tree-sitter
 )
 # TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
-
-script_dir="$( cd "$(dirname "$([ -L "$0" ] && readlink -f "$0" || echo "$0")")" && pwd)"
-# shellcheck disable=SC1090
-source "$script_dir/../../util/os_util"
 
 function rm_neovim {
     echo "Removing neovim"
@@ -78,9 +79,30 @@ for rm_pkg in "${RM_DEPS[@]}"; do
     "$rm_pkg" "$HOME"
 done
 
+cd "$script_dir"
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
     # fi
+
+    if [ "$pkg" == custom-cudnn ]; then
+        installed_install_path="/var/cudnn-local-repo-ubuntu2204-8.8.0.121"
+        cudnn_deb_packet="cudnn-local-repo-ubuntu2204-8.8.0.121_1.0-1_amd64.deb"
+        cudnn_gpg_path="$installed_install_path/cudnn-local-04B81517-keyring.gpg"
+        if [ ! -f "$cudnn_gpg_path" ]; then
+          curl -O -J -L "https://developer.download.nvidia.com/compute/redist/cudnn/v8.8.0/local_installers/12.0/$cudnn_deb_packet"
+          dpkg -i "$cudnn_deb_packet"
+          cp $cudnn_gpg_path /usr/share/keyrings/
+        fi
+        if ! deb_installed "libcudnn8"; then
+          dpkg -i "$installed_install_path/libcudnn8_8.8.0.121-1+cuda12.0_amd64.deb"
+          echo "libcudnn installed"
+        fi
+        if ! deb_installed "libcudnn8-dev"; then
+          dpkg -i "$installed_install_path/libcudnn8-dev_8.8.0.121-1+cuda12.0_amd64.deb"
+          echo "libcudnn-dev installed"
+        fi
+        echo "$pkg is installed." && continue
+    fi
 
     if [ "$pkg" == custom-rust ]; then
         if ! bin_installed "/home/$SUDO_USER/.cargo/bin/rustup"; then
