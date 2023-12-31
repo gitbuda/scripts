@@ -6,10 +6,10 @@ source "$script_dir/../../util/os_util"
 RM_DEPS=(
     # rm_neovim
     # rm_nvchad
+    # rm_fzf
 )
 DEPS=(
     htop tmux vim tree curl git tig dialog silversearcher-ag zsh plocate
-    custom-fzf
     make cmake cmake-curses-gui libssl-dev pkg-config libtool-bin unzip gettext
     ripgrep
     exuberant-ctags
@@ -19,10 +19,12 @@ DEPS=(
     memtester
     heaptrack
     sysstat iotop nvtop
-    nvidia-cuda-toolkit custom-cudnn custom-nccl custom-cutensor custom-cusparselt
+    custom-neovim custom-nvchad
+    custom-fzf
     custom-nvm
     custom-rust
-    custom-neovim custom-nvchad
+    nvidia-cuda-toolkit
+    # custom-cudnn custom-nccl custom-cutensor custom-cusparselt
     # custom-just # https://just.systems/man/en/chapter_4.html -> cargo install just
     # custom-mevi # https://github.com/fasterthanlime/mevi
       # sudo sysctl -w vm.unprivileged_userfaultfd=1
@@ -41,6 +43,11 @@ function rm_nvchad {
     rm -rf $1/.config/nvim
     rm -rf $1/.local/share/nvim
     rm -rf $1/.cache/nvim
+}
+
+function rm_fzf {
+  echo "Removing fzf"
+  rm -rf $1/.fzf
 }
 
 function install_font {
