@@ -30,6 +30,7 @@ DEPS=(
       # sudo sysctl -w vm.unprivileged_userfaultfd=1
       # cargo install just trunk
     cargo-tree-sitter
+    custom-font-droid-sans-mono
 )
 # TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
 
@@ -52,7 +53,8 @@ function rm_fzf {
 
 function install_font {
     download_link=$1
-    local_file_name=$2
+    local_file_name="$(basename $download_link)"
+    cd "$script_dir"
     if [ ! -f "$local_file_name" ]; then
         wget "$download_link" -O "$local_file_name"
         mkdir -p "/home/$SUDO_USER/.fonts"
@@ -89,6 +91,11 @@ cd "$script_dir"
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
     # fi
+
+    if [ "$pkg" == custom-font-droid-sans-mono ]; then
+        install_font https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/DroidSansMono.zip
+        echo "$pkg is installed." && continue
+    fi
 
     if [ "$pkg" == custom-cudnn ]; then
         installed_install_path="/var/cudnn-local-repo-ubuntu2204-8.8.0.121"
@@ -160,7 +167,7 @@ for pkg in "${DEPS[@]}"; do
             cd "$script_dir"
             git clone https://github.com/neovim/neovim
             cd neovim
-            git checkout v0.8.3
+            git checkout v0.9.4
             chown -R "$SUDO_USER:$SUDO_USER" "$script_dir/neovim"
             sudo -H -u "$SUDO_USER" bash -c "make CMAKE_BUILD_TYPE=Release -j4"
             make install
