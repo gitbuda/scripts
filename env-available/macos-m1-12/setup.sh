@@ -40,6 +40,7 @@ DEPS=(
     # pprof loads 0 nodes.
     gperftools
     virtualenv
+    minio/stable/minio
     node
     custom-rust
     custom-nvim
