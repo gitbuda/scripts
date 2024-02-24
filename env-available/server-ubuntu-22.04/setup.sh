@@ -159,6 +159,7 @@ for pkg in "${DEPS[@]}"; do
         if ! bin_installed "/home/$SUDO_USER/.cargo/bin/rustup"; then
             sudo -H -u "$SUDO_USER" bash -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
         fi
+        sudo -H -u "$SUDO_USER" bash -c "/home/$SUDO_USER/.cargo/bin/rustup update"
         echo "$pkg is installed." && continue
     fi
 
@@ -228,16 +229,16 @@ done
 ssh_agent_setup_path="$HOME/.local/ssh-agent-setup"
 if [ ! -f "$ssh_agent_setup_path" ]; then
     cat >"$ssh_agent_setup_path" << EOF
-if ! pgrep -u "$SUDO_USER" ssh-agent > /dev/null; then
-    ssh-agent -t 24h > "$HOME/.ssh/ssh-agent.env"
+if ! pgrep -u "\$USER" ssh-agent > /dev/null; then
+    ssh-agent -t 24h > "\$HOME/.ssh/ssh-agent.env"
 fi
-if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$HOME/.ssh/ssh-agent.env" >/dev/null
+if [[ ! -f "\$SSH_AUTH_SOCK" ]]; then
+    source "\$HOME/.ssh/ssh-agent.env" >/dev/null
 fi
 EOF
 fi
-if ! grep -qF "source $HOME/.local/ssh-agent-setup" "$HOME/.bashrc" ; then
-    echo "source $HOME/.local/ssh-agent-setup" >> "$HOME/.bashrc"
+if ! grep -qF "source $ssh_agent_setup_path" "$HOME/.bashrc" ; then
+    echo "source $ssh_agent_setup_path" >> "$HOME/.bashrc"
 fi
 
 chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config"
