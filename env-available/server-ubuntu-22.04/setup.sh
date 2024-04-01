@@ -7,6 +7,7 @@ RM_DEPS=(
     # rm_neovim
     # rm_nvchad
     # rm_fzf
+    rm_custom-conda
 )
 DEPS=(
     htop tmux vim tree curl git tig dialog silversearcher-ag zsh plocate
@@ -31,6 +32,8 @@ DEPS=(
       # cargo install just trunk
     cargo-tree-sitter
     custom-font-droid-sans-mono
+    custom-conda
+    nvidia-cuda-toolkit # custom-cuda
 )
 # TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
 
@@ -49,6 +52,11 @@ function rm_nvchad {
 function rm_fzf {
   echo "Removing fzf"
   rm -rf $1/.fzf
+}
+
+function rm_custom-conda {
+  echo "Removing custom-conda"
+  rm -rf $1/miniconda3
 }
 
 function install_font {
@@ -210,6 +218,27 @@ for pkg in "${DEPS[@]}"; do
             git clone --depth 1 https://github.com/junegunn/fzf.git /home/$SUDO_USER/.fzf
             /home/$SUDO_USER/.fzf/install
             chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.fzf"
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-conda ]; then
+        # TODO(gitbuda): Decide if it's wise to edit, e.g., bashrc -> probably not.
+        if [ ! -d "/home/$SUDO_USER/miniconda3" ]; then
+            cd "$script_dir"
+            wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+            # NOTE: -b stands for install in batch mode (without manual intervention).
+            bash miniconda.sh -b
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-cuda ]; then
+        # TODO(gitbuda): Revisit how to skip custom installation. NOTE: there is also nvidia-cuda-toolkit, if here, remove the default package.
+        if [ ! -d "/usr/local/cuda" ]; then
+            cd "$script_dir"
+            wget https://developer.download.nvidia.com/compute/cuda/11.6.0/local_installers/cuda_11.6.0_510.39.01_linux.run -O cuda.out
+            sh cuda.out
         fi
         echo "$pkg is installed." && continue
     fi
