@@ -105,22 +105,16 @@ for pkg in "${DEPS[@]}"; do
             cd "$script_dir"
             git clone https://github.com/neovim/neovim
             cd neovim
-            git checkout v0.8.3
+            git checkout v0.9.5
             make CMAKE_BUILD_TYPE=Release -j4
             sudo make install
         fi
         echo "$pkg is installed." && continue
     fi
-
     if [ "$pkg" == custom-nvchad ]; then
-        NVCHAD_DIR="/Users/$USER/.config/nvim"
-        if [ ! -d "$NVCHAD_DIR" ]; then
-            git clone https://github.com/NvChad/NvChad $NVCHAD_DIR
-            cd $NVCHAD_DIR
-            git checkout v2.0
-        fi
-        if [ ! -L "$HOME/.config/nvim/lua/custom" ]; then
-            ln -s "$script_dir/../../nvchad-v2.0" "$HOME/.config/nvim/lua/custom"
+        NVIM_CONF_DIR="/Users/$USER/.config/nvim"
+        if [ ! -L "$NVIM_CONF_DIR" ]; then
+            ln -s "$script_dir/../../nvchad-v2.5" "$NVIM_CONF_DIR"
         fi
         echo "$pkg is installed." && continue
     fi
