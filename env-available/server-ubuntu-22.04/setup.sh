@@ -5,9 +5,9 @@ source "$script_dir/../../util/os_util"
 
 RM_DEPS=(
     # rm_neovim
-    # rm_nvchad
+    rm_nvchad
     # rm_fzf
-    rm_custom-conda
+    # rm_custom-conda
 )
 DEPS=(
     htop tmux vim tree curl git tig dialog silversearcher-ag zsh plocate
@@ -176,7 +176,7 @@ for pkg in "${DEPS[@]}"; do
             cd "$script_dir"
             git clone https://github.com/neovim/neovim
             cd neovim
-            git checkout v0.9.4
+            git checkout v0.9.5
             chown -R "$SUDO_USER:$SUDO_USER" "$script_dir/neovim"
             sudo -H -u "$SUDO_USER" bash -c "make CMAKE_BUILD_TYPE=Release -j4"
             make install
@@ -186,14 +186,14 @@ for pkg in "${DEPS[@]}"; do
 
     if [ "$pkg" == custom-nvchad ]; then
         if [ ! -d "/home/$SUDO_USER/.config/nvim" ]; then
-            sudo -H -u "$SUDO_USER" bash -c "git clone git@github.com:NvChad/NvChad.git '/home/$SUDO_USER/.config/nvim'"
+            sudo -H -u "$SUDO_USER" bash -c "git clone git@github.com:NvChad/starter.git '/home/$SUDO_USER/.config/nvim'"
             chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config/nvim"
-            cd "/home/$SUDO_USER/.config/nvim"
-            git checkout v2.0
+            # cd "/home/$SUDO_USER/.config/nvim"
+            # git checkout v2.5
         fi
-        if [ ! -L "/home/$SUDO_USER/.config/nvim/lua/custom" ]; then
-            ln -s "/home/$SUDO_USER/scripts/nvchad-v2.0" "/home/$SUDO_USER/.config/nvim/lua/custom"
-        fi
+        # if [ ! -L "/home/$SUDO_USER/.config/nvim/lua/custom" ]; then
+        #    ln -s "/home/$SUDO_USER/scripts/nvchad-v2.5" "/home/$SUDO_USER/.config/nvim/lua/custom"
+        # fi
         echo "$pkg is installed." && continue
     fi
 
