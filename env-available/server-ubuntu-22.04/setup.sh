@@ -5,7 +5,7 @@ source "$script_dir/../../util/os_util"
 
 RM_DEPS=(
     # rm_neovim
-    rm_nvchad
+    # rm_nvchad
     # rm_fzf
     # rm_custom-conda
 )
@@ -31,7 +31,9 @@ DEPS=(
       # sudo sysctl -w vm.unprivileged_userfaultfd=1
       # cargo install just trunk
     cargo-tree-sitter
-    custom-font-droid-sans-mono
+    # TODO(gitbuda): 0xProto Nerd show all NvChat v2.5 icons
+    # TODO(gitbuda): Move this away, on server it's useless.
+    custom-font-droid-sans-mono custom-font-jetbrains-mono
     custom-conda
     nvidia-cuda-toolkit # custom-cuda
 )
@@ -102,6 +104,11 @@ for pkg in "${DEPS[@]}"; do
 
     if [ "$pkg" == custom-font-droid-sans-mono ]; then
         install_font https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/DroidSansMono.zip
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-font-jetbrains-mono ]; then
+        install_font https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.0/JetBrainsMono.zip
         echo "$pkg is installed." && continue
     fi
 
