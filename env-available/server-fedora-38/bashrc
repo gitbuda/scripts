@@ -5,3 +5,5 @@ fi
 
 # Add ssh-ident to PATH
 export PATH="/home/$USER/.local/ssh-ident:$PATH"
+source /home/buda/.local/ssh-agent-setup
+source /home/buda/.bash_aliases
