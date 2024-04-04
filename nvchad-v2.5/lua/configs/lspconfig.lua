@@ -1,4 +1,3 @@
--- TODO(gitbuda): Add https://github.com/NvChad/starter as nvchad git module
 local on_attach = require("nvchad.configs.lspconfig").on_attach
 local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
@@ -17,5 +16,5 @@ lspconfig.clangd.setup {
   on_attach = on_attach,
   on_init = on_init,
   capabilities = capabilities,
-  filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "lcp" }
+  filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "lcp" },
 }

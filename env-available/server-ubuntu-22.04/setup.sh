@@ -31,9 +31,6 @@ DEPS=(
       # sudo sysctl -w vm.unprivileged_userfaultfd=1
       # cargo install just trunk
     cargo-tree-sitter
-    # TODO(gitbuda): 0xProto Nerd show all NvChat v2.5 icons
-    # TODO(gitbuda): Move this away, on server it's useless.
-    custom-font-droid-sans-mono custom-font-jetbrains-mono
     custom-conda
     nvidia-cuda-toolkit # custom-cuda
 )
@@ -59,18 +56,6 @@ function rm_fzf {
 function rm_custom-conda {
   echo "Removing custom-conda"
   rm -rf $1/miniconda3
-}
-
-function install_font {
-    download_link=$1
-    local_file_name="$(basename $download_link)"
-    cd "$script_dir"
-    if [ ! -f "$local_file_name" ]; then
-        wget "$download_link" -O "$local_file_name"
-        mkdir -p "/home/$SUDO_USER/.fonts"
-        unzip "$local_file_name" -d "/home/$SUDO_USER/.fonts"
-        fc-cache -fv
-    fi
 }
 
 if [ "$EUID" -ne 0 ]; then
@@ -101,16 +86,6 @@ cd "$script_dir"
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
     # fi
-
-    if [ "$pkg" == custom-font-droid-sans-mono ]; then
-        install_font https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/DroidSansMono.zip
-        echo "$pkg is installed." && continue
-    fi
-
-    if [ "$pkg" == custom-font-jetbrains-mono ]; then
-        install_font https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.0/JetBrainsMono.zip
-        echo "$pkg is installed." && continue
-    fi
 
     if [ "$pkg" == custom-cudnn ]; then
         installed_install_path="/var/cudnn-local-repo-ubuntu2204-8.8.0.121"
@@ -193,14 +168,15 @@ for pkg in "${DEPS[@]}"; do
 
     if [ "$pkg" == custom-nvchad ]; then
         if [ ! -d "/home/$SUDO_USER/.config/nvim" ]; then
-            sudo -H -u "$SUDO_USER" bash -c "git clone git@github.com:NvChad/starter.git '/home/$SUDO_USER/.config/nvim'"
-            chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config/nvim"
+            # sudo -H -u "$SUDO_USER" bash -c "git clone git@github.com:NvChad/starter.git '/home/$SUDO_USER/.config/nvim'"
+            # chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config/nvim"
             # cd "/home/$SUDO_USER/.config/nvim"
             # git checkout v2.5
+            if [ ! -L "/home/$SUDO_USER/.config/nvim" ]; then
+               ln -s "/home/$SUDO_USER/scripts/nvchad-v2.5" "/home/$SUDO_USER/.config/nvim"
+            fi
         fi
-        # if [ ! -L "/home/$SUDO_USER/.config/nvim/lua/custom" ]; then
-        #    ln -s "/home/$SUDO_USER/scripts/nvchad-v2.5" "/home/$SUDO_USER/.config/nvim/lua/custom"
-        # fi
+
         echo "$pkg is installed." && continue
     fi
 
