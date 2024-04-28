@@ -8,6 +8,7 @@ RM_DEPS=(
     # rm_nvchad
     # rm_fzf
     # rm_custom-conda
+    # rm_custom-cuda
 )
 DEPS=(
     htop tmux vim tree curl git tig dialog silversearcher-ag zsh plocate
@@ -24,15 +25,15 @@ DEPS=(
     custom-fzf
     custom-nvm
     custom-rust
-    nvidia-cuda-toolkit
+    custom-conda
+    # nvidia-cuda-toolkit
     # custom-cudnn custom-nccl custom-cutensor custom-cusparselt
+    custom-cuda
     # custom-just # https://just.systems/man/en/chapter_4.html -> cargo install just
     # custom-mevi # https://github.com/fasterthanlime/mevi
       # sudo sysctl -w vm.unprivileged_userfaultfd=1
       # cargo install just trunk
     cargo-tree-sitter
-    custom-conda
-    nvidia-cuda-toolkit # custom-cuda
 )
 # TODO(gitbuda): Add e.g. https://github.com/leehblue/texpander
 
@@ -56,6 +57,10 @@ function rm_fzf {
 function rm_custom-conda {
   echo "Removing custom-conda"
   rm -rf $1/miniconda3
+}
+
+function rm_custom-cuda {
+  echo "Removing custom-cuda"
 }
 
 if [ "$EUID" -ne 0 ]; then
@@ -217,10 +222,14 @@ for pkg in "${DEPS[@]}"; do
     fi
 
     if [ "$pkg" == custom-cuda ]; then
+        # https://www.cherryservers.com/blog/install-cuda-ubuntu
+        # Find cuda download link under https://developer.nvidia.com/cuda-downloads.
         # TODO(gitbuda): Revisit how to skip custom installation. NOTE: there is also nvidia-cuda-toolkit, if here, remove the default package.
         if [ ! -d "/usr/local/cuda" ]; then
             cd "$script_dir"
-            wget https://developer.download.nvidia.com/compute/cuda/11.6.0/local_installers/cuda_11.6.0_510.39.01_linux.run -O cuda.out
+            if [ ! -f "cuda.out" ]; then
+                wget https://developer.download.nvidia.com/compute/cuda/12.2.2/local_installers/cuda_12.2.2_535.104.05_linux.run -O cuda.out
+            fi
             sh cuda.out
         fi
         echo "$pkg is installed." && continue
