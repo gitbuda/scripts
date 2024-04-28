@@ -24,6 +24,8 @@ DEPS=(
     custom-nvchad
     custom-rust
     custom-fzf
+    # TODO(gitbuda): 0xProto Nerd show all NvChat v2.5 icons
+    custom-font-droid-sans-mono custom-font-jetbrains-mono
 )
 
 script_dir="$( cd "$(dirname "$([ -L "$0" ] && readlink -f "$0" || echo "$0")")" && pwd)"
@@ -62,7 +64,8 @@ done
 
 function install_font {
     download_link=$1
-    local_file_name=$2
+    local_file_name="$(basename $download_link)"
+    cd "$script_dir"
     if [ ! -f "$local_file_name" ]; then
         wget "$download_link" -O "$local_file_name"
         mkdir -p "/home/$SUDO_USER/.fonts"
@@ -76,6 +79,15 @@ install_font "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/L
 for pkg in "${DEPS[@]}"; do
     # if [ "$pkg" ==  ]; then
     # fi
+
+    if [ "$pkg" == custom-font-droid-sans-mono ]; then
+        install_font https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/DroidSansMono.zip
+        echo "$pkg is installed." && continue
+    fi
+    if [ "$pkg" == custom-font-jetbrains-mono ]; then
+        install_font https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.0/JetBrainsMono.zip
+        echo "$pkg is installed." && continue
+    fi
 
     if [ "$pkg" == custom-rust ]; then
         if ! bin_installed "/home/$SUDO_USER/.cargo/bin/rustup"; then

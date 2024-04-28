@@ -15,7 +15,7 @@ for _, lsp in ipairs(servers) do
     opts.filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "lcp" }
     opts.cmd = {
       "clangd",
-      "--clang-tidy",
+      -- "--clang-tidy",
     }
     opts.capabilities.offsetEncoding = "utf-8"
   end

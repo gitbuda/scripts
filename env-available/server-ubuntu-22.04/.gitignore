@@ -1,1 +1,4 @@
 neovim
+nccl/
+*.zip
+miniconda.sh
