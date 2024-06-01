@@ -173,10 +173,12 @@ for pkg in "${DEPS[@]}"; do
 
     if [ "$pkg" == custom-nvchad ]; then
         if [ ! -d "/home/$SUDO_USER/.config/nvim" ]; then
+            # NOTE: Only reconsider on a new major version.
             # sudo -H -u "$SUDO_USER" bash -c "git clone git@github.com:NvChad/starter.git '/home/$SUDO_USER/.config/nvim'"
             # chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config/nvim"
             # cd "/home/$SUDO_USER/.config/nvim"
             # git checkout v2.5
+            # TODO: Since v2.5 remove the .git folder
             if [ ! -L "/home/$SUDO_USER/.config/nvim" ]; then
                ln -s "/home/$SUDO_USER/scripts/nvchad-v2.5" "/home/$SUDO_USER/.config/nvim"
             fi
