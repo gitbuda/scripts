@@ -1,0 +1,5 @@
+
+source /Users/buda/.docker/init-bash.sh || true # Added by Docker Desktop
+. "$HOME/.cargo/env"
+
+. "$HOME/Scripts/public/dotfiles/bash_aliases"

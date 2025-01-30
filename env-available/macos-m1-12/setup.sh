@@ -17,6 +17,9 @@
 #     brew install sphinx-doc
 #     brew link sphinx-doc --force # https://stackoverflow.com/questions/36137496/os-x-install-of-sphinx-the-sphinx-build-and-sphinx-quickstart-not-found
 #     pip3 install m2r
+#
+# TODO: antlr4
+#     curl -L -O http://www.antlr.org/download/antlr-4.13.1-complete.jar
 
 RM_DEPS=(
     # rm_neovim
@@ -80,7 +83,7 @@ for f in ${PUBLIC_DOTFILES}; do
     ln -s "${script_dir}/../../dotfiles/$f" "/Users/$USER/.$f"
 done
 
-LOCAL_DOTFILES="zshrc zshenv tmux.conf"
+LOCAL_DOTFILES="zshrc zshenv tmux.conf bashrc"
 for f in ${LOCAL_DOTFILES}; do
     rm -rf "/Users/$USER/.$f"
     ln -s "${script_dir}/$f" "/Users/$USER/.$f"

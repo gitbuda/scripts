@@ -75,6 +75,7 @@ plugins=(git tmux brew zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+export CLASSPATH="/usr/local/lib/antlr-4.13.1-complete.jar"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -108,3 +109,11 @@ source "$HOME/.cargo/env"
 source /Users/buda/.docker/init-zsh.sh || true # Added by Docker Desktop
 
 . "$HOME/.zshenv"
+
+# pnpm
+export PNPM_HOME="/Users/buda/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
