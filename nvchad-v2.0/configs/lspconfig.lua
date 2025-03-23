@@ -17,7 +17,8 @@ for _, lsp in ipairs(servers) do
       "clangd",
       -- "--clang-tidy",
     }
-    opts.capabilities.offsetEncoding = "utf-8"
+    -- TODO(gitbuda): This works for C++ but doesn't work for Rust. On C++ there is only a warning.
+    -- opts.capabilities.offsetEncoding = "utf-8"
   end
   lspconfig[lsp].setup(opts)
 end
