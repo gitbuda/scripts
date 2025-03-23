@@ -62,6 +62,7 @@ function rm_neovim {
 }
 function rm_nvchad {
     echo "Removing nvchad"
+    rm -rf $1/.config/nvim/lazy-lock.json
     rm -rf $1/.config/nvim
     rm -rf $1/.local/share/nvim
     rm -rf $1/.cache/nvim
@@ -108,7 +109,7 @@ for pkg in "${DEPS[@]}"; do
             cd "$script_dir"
             git clone https://github.com/neovim/neovim
             cd neovim
-            git checkout v0.9.5
+            git checkout v0.10.4
             make CMAKE_BUILD_TYPE=Release -j4
             sudo make install
         fi
@@ -132,6 +133,8 @@ for pkg in "${DEPS[@]}"; do
       if ! bin_installed "$HOME/.cargo/bin/cargo"; then
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
       fi
+      rustup update stable
+      rustup default stable
       echo "$pkg is installed." && continue
     fi
 
