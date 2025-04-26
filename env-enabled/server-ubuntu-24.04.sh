@@ -1,0 +1,1 @@
+../env-available/server-ubuntu-24.04/setup.sh
