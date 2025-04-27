@@ -14,16 +14,16 @@ DEPS=(
     make cmake cmake-curses-gui libssl-dev pkg-config libtool-bin unzip gettext
     ripgrep
     exuberant-ctags
-    python3-dbg python3.12-venv
+    python3-dbg python3.12-venv python3-virtualenv
     openjdk-17-jre
     ansible
     memtester
     heaptrack
     sysstat iotop nvtop
-    # custom-neovim custom-nvchad
+    custom-rust # .bashrc requires Rust
+    custom-nvm # NOTE: nvim LSP clients require node; `nvm install node` required to install latest node and npm
+    custom-neovim custom-nvchad
     # custom-fzf
-    # custom-nvm
-    # custom-rust
     # nvidia-cuda-toolkit
     # custom-cudnn custom-nccl custom-cutensor custom-cusparselt
     # custom-just # https://just.systems/man/en/chapter_4.html -> cargo install just
@@ -158,7 +158,7 @@ for pkg in "${DEPS[@]}"; do
             cd "$script_dir"
             git clone https://github.com/neovim/neovim
             cd neovim
-            git checkout v0.9.5
+            git checkout v0.11.1
             chown -R "$SUDO_USER:$SUDO_USER" "$script_dir/neovim"
             sudo -H -u "$SUDO_USER" bash -c "make CMAKE_BUILD_TYPE=Release -j4"
             make install
@@ -168,12 +168,12 @@ for pkg in "${DEPS[@]}"; do
 
     if [ "$pkg" == custom-nvchad ]; then
         if [ ! -d "/home/$SUDO_USER/.config/nvim" ]; then
-            # sudo -H -u "$SUDO_USER" bash -c "git clone git@github.com:NvChad/starter.git '/home/$SUDO_USER/.config/nvim'"
-            # chown -R "$SUDO_USER:$SUDO_USER" "/home/$SUDO_USER/.config/nvim"
-            # cd "/home/$SUDO_USER/.config/nvim"
-            # git checkout v2.5
+            sudo -H -u "$SUDO_USER" bash -c "git clone git@github.com:NvChad/starter.git $script_dir/nvchad_2025-04-27"
+            chown -R "$SUDO_USER:$SUDO_USER" "$script_dir/nvchad_2025-04-27"
+            cd $script_dir/nvchad_2025-04-27
+            rm -rf .git
             if [ ! -L "/home/$SUDO_USER/.config/nvim" ]; then
-               ln -s "/home/$SUDO_USER/scripts/nvchad-v2.5" "/home/$SUDO_USER/.config/nvim"
+               ln -s "$script_dir/nvchad_2025-04-27" "/home/$SUDO_USER/.config/nvim"
             fi
         fi
 
@@ -182,8 +182,9 @@ for pkg in "${DEPS[@]}"; do
 
     if [ "$pkg" == custom-nvm ]; then
         if [ ! -d "/home/$SUDO_USER/.nvm" ]; then
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | sudo -H -u "$SUDO_USER" bash
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | sudo -H -u "$SUDO_USER" bash
         fi
+        sudo -H -u "$SUDO_USER" bash -c "nvm install node"
         echo "$pkg is installed." && continue
     fi
 
