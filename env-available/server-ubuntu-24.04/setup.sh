@@ -23,6 +23,7 @@ DEPS=(
     custom-rust # .bashrc requires Rust
     custom-nvm # NOTE: nvim LSP clients require node; `nvm install node` required to install latest node and npm
     custom-neovim custom-nvchad
+    custom-docker
     # custom-fzf
     # nvidia-cuda-toolkit
     # custom-cudnn custom-nccl custom-cutensor custom-cusparselt
@@ -183,8 +184,8 @@ for pkg in "${DEPS[@]}"; do
     if [ "$pkg" == custom-nvm ]; then
         if [ ! -d "/home/$SUDO_USER/.nvm" ]; then
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | sudo -H -u "$SUDO_USER" bash
+            sudo -H -u "$SUDO_USER" bash -c "source /home/$SUDO_USER/.bashrc && nvm install node" # TODO(gitbuda): This line still has an issue.
         fi
-        sudo -H -u "$SUDO_USER" bash -c "nvm install node"
         echo "$pkg is installed." && continue
     fi
 
@@ -223,6 +224,24 @@ for pkg in "${DEPS[@]}"; do
             cd "$script_dir"
             wget https://developer.download.nvidia.com/compute/cuda/11.6.0/local_installers/cuda_11.6.0_510.39.01_linux.run -O cuda.out
             sh cuda.out
+        fi
+        echo "$pkg is installed." && continue
+    fi
+
+    if [ "$pkg" == custom-docker ]; then
+        if ! command -v docker > /dev/null 2>&1; then
+            sudo apt-get update -y
+            sudo apt-get install -y ca-certificates curl
+            sudo install -m 0755 -d /etc/apt/keyrings
+            sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+            sudo chmod a+r /etc/apt/keyrings/docker.asc
+            echo \
+                "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+                $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+                sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+            sudo apt-get update -y
+            sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+            sudo usermod -aG docker $SUDO_USER
         fi
         echo "$pkg is installed." && continue
     fi
