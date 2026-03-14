@@ -65,8 +65,8 @@ return {
     opts = {
       -- add any opts here
       -- for example
-      provider = "openai",
-      cursor_applying_provider = 'opanai',
+      provider = "ollama",
+      cursor_applying_provider = 'ollama',
       behaviour = {
           enable_cursor_planning_mode = true,
       },
@@ -80,7 +80,8 @@ return {
       },
       ollama = {
         endpoint = "http://127.0.0.1:11434",
-        model = "gemma3:1b",
+        -- model = "gemma3:4b",
+        model = "qwen2.5-coder:7b",
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
